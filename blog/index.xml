@@ -17,7 +17,9 @@
       <pubDate>Mon, 20 Apr 2020 00:00:00 +0000</pubDate>
       
       <guid>/blog/if_expressions/</guid>
-      <description>A while ago, I’ve heard about functional programming. Being in the pursuit of improving my skills as a programmer, all of the functional methodologies and rules, seem to be of a great value. Thus, I embark in a journey of learning functional programming principles, by trying to implement all of them in Swift programming language. Myself, being an iOS developer, I think it will be of a great value to try and implement the FP principles in Swift.</description>
+      <description>This blogpost is a part of going through the SICP book, you can get a free copy from:
+https://web.mit.edu/alexmv/6.037/sicp.pdf
+A while ago, I’ve heard about functional programming. Being in the pursuit of improving my skills as a programmer, all of the functional methodologies and rules, seem to be of a great value. Thus, I embark in a journey of learning functional programming principles, by trying to implement all of them in Swift programming language.</description>
     </item>
     
   </channel>
