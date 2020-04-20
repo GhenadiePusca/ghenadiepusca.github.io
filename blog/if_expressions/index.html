@@ -130,29 +130,32 @@ Also, I most probably will retain and use most of FP principles, if implemented 
 This first part is simple and pretty straightforward, besides having a lot of parentheses(but if you wrote at least some code in Objective C, no big deal :)).
 The interesting part is the mention of expressions, like almost everything is an expression, even Conditional logic, like “if” and “cond”(aka switch).
 Today I want to focus on “if” expression, and through it get a better knowledge of what is an expression.</p>
+<h2 id="if-expression">If expression</h2>
 <p>By the book, <code>if</code> expression is defined as:</p>
 <pre><code>(if ⟨predicate⟩ ⟨consequent⟩ ⟨alternative⟩)  
-</code></pre><p>To evaluate an if expression, the interpreter starts by evaluating the ⟨predicate⟩ part of the expression. If the ⟨predicate⟩ evaluates to a true value, the interpreter then evaluates the ⟨consequent⟩ and returns its value. Otherwise it evaluates the ⟨alternative⟩ and returns its value.
-And the most important part is that “if” - returns a value. We’ll start exploring what options do we have in Swift language, what is the difference between an “if” returning a value and the one that does not, and what are the applications.</p>
+</code></pre><p>To evaluate an <code>if expression</code>, the interpreter starts by evaluating the <strong>predicate</strong>. If <strong>predicate</strong> evaluates to a true value, interpreter then evaluates the <strong>consequent</strong> and returns its value. Otherwise it evaluates the <strong>alternative</strong> and returns its value.
+And the most important part is that <code>if expression</code> - returns a value. We’ll start exploring what options do we have in Swift language, what is the difference between an <code>if</code> returning a value and the one that does not, and what are the applications.</p>
 <h2 id="if-statement-in-swift">If statement in swift</h2>
 <p>If statement in swift is no different than in other languages, XCode docs says:</p>
-<p>Changes which path your code takes</p>
-<p>And this already implies that if statement in swift does not return a value, we can say that the if statement in Swift always performs some side effect. Thus we can define it as:</p>
+<pre><code> Changes which path your code takes
+</code></pre><p>And this already implies that if statement in swift does not return a value, we can say that the if statement in Swift always performs some side effect. Thus we can define it as:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#66d9ef">if</span> &lt;predicate&gt; {
  &lt;then_side_effect&gt;
 } <span style="color:#66d9ef">else</span> {
  &lt;else_side_effect&gt;
 }
-</code></pre></div><p>Where side effect can be anything - from changing the value of a local variable, to performing IO operations. What if we do want to return a value instead of performing a side effect? And actually most of the time we want to return a value from the if statement, rather than performing a side effect. Well, Swift(and many other languages) defines the ternary operator as shorthand for the if-else statement, but it has one more important property - it does return a value.
-Ternary operator</p>
+</code></pre></div><p>Where side effect can be anything - from changing the value of a local variable, to performing IO operations. What if we do want to return a value instead of performing a side effect? And actually most of the time we want to return a value from the if statement, rather than performing a side effect. Well, Swift(and many other languages) defines the ternary operator as a shorthand for the if-else statement, but it has one more important property - it does return a value.</p>
+<h2 id="ternary-operator">Ternary operator</h2>
 <p>As in many other languages ternary operator in swift is defined as:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">&lt;predicate&gt; ? &lt;consequent&gt; : &lt;alternative&gt;
-</code></pre></div><p>Note that it is very similar to the <code>if</code> expression defined in the SICP book:</p>
+</code></pre></div><p>Note that it is very similar to <code>if</code> expression defined in SICP book:</p>
 <pre><code>(if ⟨predicate⟩ ⟨consequent⟩ ⟨alternative⟩)
-</code></pre><p>Ternary operator has two important properties:
-It always returns a value.
-<!-- raw HTML omitted --> and <!-- raw HTML omitted --> should have same type.
-Ternary operator still can perform side effects, in this case the return type will be Void. You may wonder then - Why do we have if statement and also ternary operator? Can we have just one? In many, if not all, functional languages <code>if</code> can do both.</p>
+</code></pre><p>Ternary operator has two important properties:</p>
+<ul>
+<li>It always returns a value.</li>
+<li><!-- raw HTML omitted --> and <!-- raw HTML omitted --> should have same type.</li>
+</ul>
+<p>Ternary operator still can perform side effects, in this case the return type will be Void. You may wonder then - why do we have if statement and ternary operator? Can we have just one? In many, if not all, functional languages <code>if</code> can do both.</p>
 <h2 id="if-statement-vs-ternary-operator">If statement vs ternary operator</h2>
 <h3 id="if-statement">If statement</h3>
 <ul>
@@ -160,22 +163,30 @@ Ternary operator still can perform side effects, in this case the return type wi
 <li>Else branch is optional</li>
 <li>Can add multiple branches else-if branches</li>
 </ul>
-<h3 id="ternary-operator">Ternary operator</h3>
+<h3 id="ternary-operator-1">Ternary operator</h3>
 <ul>
-<li>Always returns a value, in case of side effects returns Void</li>
-<li>Both, true and false branches should return the same type</li>
-<li>False branch(alternative) cannot be omitted.</li>
-<li>Multiple operators can be nested, right associativity is applied:</li>
-</ul>
+<li>
+<p>Always returns a value, in case of side effects returns Void</p>
+</li>
+<li>
+<p>Both, true and false branches should return the same type</p>
+</li>
+<li>
+<p>False branch(alternative) cannot be omitted.</p>
+</li>
+<li>
+<p>Multiple operators can be nested, right associativity is applied:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">    a <span style="color:#f92672">&gt;</span> b ? <span style="color:#ae81ff">1</span> : a <span style="color:#f92672">&lt;</span> b ? <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span> : <span style="color:#ae81ff">1</span>
 </code></pre></div><p>Is evaluated as:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">    a <span style="color:#f92672">&gt;</span> b ? <span style="color:#ae81ff">1</span> : (a <span style="color:#f92672">&lt;</span> b ? <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span> : <span style="color:#ae81ff">1</span>)
-</code></pre></div><p>As we see, if statement and ternary operator cannot easily substitute one another,
-as with ternary operator the else branch cannot be omitted and nesting is quite clumsy. What if we could have an <code>if</code> which will have the benefits of both?
-Expressions vs statements</p>
-<p><code>if</code> defined in swift is a statement, while <code>if</code> defined in the SICP book, and in many other functional programming, is an expression. Almost all of the Functional Languages have <code>if</code> as an expression, thus there is no need ternary operator defined.</p>
+</code></pre></div></li>
+</ul>
+<p>As we see, if statement and ternary operator cannot easily substitute one another,
+as with ternary operator else branch cannot be omitted and nesting is quite clumsy. What if we could have an <code>if</code> which will have the benefits of both?</p>
+<h2 id="expressions-vs-statements">Expressions vs statements</h2>
+<p><code>if</code> defined in swift is a statement, while <code>if</code> defined in the SICP book, and in many other functional programming, is an expression. Almost all of the Functional Languages have <code>if</code> as an expression, thus there is no need for a ternary operator to be defined.</p>
 <p>It appears that most of the functional languages are expression-oriented, and it is somewhat correct to say that most of the imperative languages are statement-oriented. Everything has to do with side effects, almost in any definition of FP you will find that functional programming avoids as hell side effects, while in imperative programming side effects are everywhere(sure you can avoid this, but the language itself does not constrain you).</p>
-<p>Expressions always return a value, but statements do not return a value and are used to perform side effects.</p>
+<p>** Expressions always return a value, but statements do not return a value and are used to perform side effects. **</p>
 <h2 id="creating-a-swift-if-expression">Creating a swift if expression</h2>
 <p>Let’s take a simple example, and start creating our own if expression.</p>
 <pre><code>func example(a: Int, b: Int) -&gt; Int {
@@ -188,12 +199,7 @@ Expressions vs statements</p>
  
  return a * multiplier
 }
-</code></pre><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#66d9ef">if</span> &lt;predicate&gt; {
- &lt;then_side_effect&gt;
-} <span style="color:#66d9ef">else</span> {
- &lt;else_side_effect&gt;
-}
-</code></pre></div><p>This is a pretty standard example of using an if statement - when in function body we need to perform some additional calculations. As you can see if statement is having side effects on multiplier. We can refactor this to use ternary operator as such:</p>
+</code></pre><p>This is a pretty standard example of using an if statement - when in function body we need to perform some additional calculations. As you can see if statement is having side effects on multiplier. We can refactor this to use ternary operator as such:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">example</span>(a: Int, b: Int) -&gt; Int {
  <span style="color:#66d9ef">let</span> multiplier = a <span style="color:#f92672">&gt;</span> b ? a <span style="color:#f92672">-</span> b : b <span style="color:#f92672">-</span> a
  <span style="color:#66d9ef">return</span> a <span style="color:#f92672">*</span> multiplier
@@ -223,7 +229,7 @@ Now from here on, we do want to create our own if expression to be used:</p>
 <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">example</span>(a: Int, b: Int) -&gt; Int {
  <span style="color:#66d9ef">return</span> a <span style="color:#f92672">*</span> If(a <span style="color:#f92672">&gt;</span> b, { a <span style="color:#f92672">-</span> b }, { b <span style="color:#f92672">-</span> a })
 }
-</code></pre></div><p>Better, but having to specify the curly braces again and again can be tedious. We can use autoclosure feature to let the compiler generate the closure for us:</p>
+</code></pre></div><p>Better, but having to specify curly braces again and again can be tedious. We can use autoclosure feature to let the compiler generate the closure for us:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">If</span>(<span style="color:#66d9ef">_</span> predicate: Bool,
         <span style="color:#66d9ef">_</span> consequent: <span style="color:#66d9ef">@autoclosure</span> () -&gt; Int,
         <span style="color:#66d9ef">_</span> alternative: <span style="color:#66d9ef">@autoclosure</span> () -&gt; Int) -&gt; Int {
@@ -239,7 +245,7 @@ Now from here on, we do want to create our own if expression to be used:</p>
            <span style="color:#66d9ef">_</span> alternative: <span style="color:#66d9ef">@autoclosure</span> () -&gt; T) -&gt; T {
  predicate ? consequent() : alternative()
 }
-</code></pre></div><p>All good, we have defined the ternary operator in terms of a function. As mentioned earlier, the else statement was mandatory in ternary operator, we can define If function overload that will not require an else branch:</p>
+</code></pre></div><p>All good, we have defined the ternary operator in terms of a function. As mentioned earlier, else statement was mandatory in ternary operator, we can define If function overload that will not require an else branch:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">If</span>&lt;T&gt;(<span style="color:#66d9ef">_</span> predicate: Bool,
            <span style="color:#66d9ef">_</span> consequent: <span style="color:#66d9ef">@autoclosure</span> () -&gt; T) -&gt; T? {
  If(predicate, consequent(), .<span style="color:#66d9ef">none</span>)
@@ -259,7 +265,7 @@ Now from here on, we do want to create our own if expression to be used:</p>
 }
 </code></pre></div><p>That is, we have defined an if expression that has the best from the if statement and ternary operator.</p>
 <h2 id="conclusion">Conclusion</h2>
-<p>This was the start of exploring functional programming through SICP book. The main idea was to play and explore how well functional principles do apply in Swift. The first &lsquo;alien&rsquo; encounter is that much of everything in FP(at least for the language in SICP) is an expression. We saw that Swift provides an expression like <code>if</code> under the ternary operator, however it has its shortcomings - chaining multiple ternary operators look ugly and inability to have only the true branch executed. By comparing if statement to the ternary operator we have concluded what are the main differences between an expression and a statement. In the last part a straightforward functional implementation for the if expression was done. With this implementation we have explored how easy it is in swift to create a general purpose functional component, and as far as I can tell it looks promising.
+<p>This was the start of exploring functional programming through SICP book. The main idea was to play and explore how well functional principles do apply in Swift. The first &lsquo;alien&rsquo; encounter is that much of everything in FP(at least for the language in SICP) is an expression. We saw that Swift provides an expression like <code>if</code> under the ternary operator, however it has its shortcomings - chaining multiple ternary operators look ugly and inability to have only the true branch executed. By comparing if statement to the ternary operator we have concluded what are the main differences between an expression and a statement. In the last part a straightforward functional implementation for the if expression was done. The new if expression could have been implemented by extending swift standard library and implemente a custom feature, however the main idea was to see how easily we can create a custom, general purpose functional component in swift.
 Moving forward with the knowledge acquired, we will have to build other general purpose functional component such as cond(aka switch), this will be explored in the next post.
 Having those components in place, we will be able to conquer the examples and exercises from the book in a functional manner.</p>
 <p>Till next time!</p>
@@ -274,13 +280,16 @@ Having those components in place, we will be able to conquer the examples and ex
                         <nav id="TableOfContents" class="sticky-top">
   <ul>
     <li><a href="#the-beginning-of-the-sicp-book">The beginning of the SICP book</a></li>
+    <li><a href="#if-expression">If expression</a></li>
     <li><a href="#if-statement-in-swift">If statement in swift</a></li>
+    <li><a href="#ternary-operator">Ternary operator</a></li>
     <li><a href="#if-statement-vs-ternary-operator">If statement vs ternary operator</a>
       <ul>
         <li><a href="#if-statement">If statement</a></li>
-        <li><a href="#ternary-operator">Ternary operator</a></li>
+        <li><a href="#ternary-operator-1">Ternary operator</a></li>
       </ul>
     </li>
+    <li><a href="#expressions-vs-statements">Expressions vs statements</a></li>
     <li><a href="#creating-a-swift-if-expression">Creating a swift if expression</a></li>
     <li><a href="#conclusion">Conclusion</a></li>
   </ul>
