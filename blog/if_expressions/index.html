@@ -227,7 +227,6 @@ Now from here on, we do want to create our own if expression to be used:</p>
         <span style="color:#66d9ef">_</span> alternative: () -&gt; Int) -&gt; Int {
  predicate ? consequent() : alternative()
 }
-
 <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">example</span>(a: Int, b: Int) -&gt; Int {
  <span style="color:#66d9ef">return</span> a <span style="color:#f92672">*</span> If(a <span style="color:#f92672">&gt;</span> b, { a <span style="color:#f92672">-</span> b }, { b <span style="color:#f92672">-</span> a })
 }
@@ -237,7 +236,6 @@ Now from here on, we do want to create our own if expression to be used:</p>
         <span style="color:#66d9ef">_</span> alternative: <span style="color:#66d9ef">@autoclosure</span> () -&gt; Int) -&gt; Int {
  predicate ? consequent() : alternative()
 }
-
 <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">example</span>(a: Int, b: Int) -&gt; Int {
  <span style="color:#66d9ef">return</span> a <span style="color:#f92672">*</span> If(a <span style="color:#f92672">&gt;</span> b, a <span style="color:#f92672">-</span> b, b <span style="color:#f92672">-</span> a)
 }
