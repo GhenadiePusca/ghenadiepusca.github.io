@@ -188,7 +188,9 @@ as with ternary operator else branch cannot be omitted and nesting is quite clum
 <h2 id="expressions-vs-statements">Expressions vs statements</h2>
 <p><code>if</code> defined in swift is a statement, while <code>if</code> defined in the SICP book, and in many other functional programming, is an expression. Almost all of the Functional Languages have <code>if</code> as an expression, thus there is no need for a ternary operator to be defined.</p>
 <p>It appears that most of the functional languages are expression-oriented, and it is somewhat correct to say that most of the imperative languages are statement-oriented. Everything has to do with side effects, almost in any definition of FP you will find that functional programming avoids as hell side effects, while in imperative programming side effects are everywhere(sure you can avoid this, but the language itself does not constrain you).</p>
-<p>** Expressions always return a value, but statements do not return a value and are used to perform side effects. **</p>
+<blockquote>
+<p>Expressions always return a value, but statements do not return a value and are used to perform side effects.</p>
+</blockquote>
 <h2 id="creating-a-swift-if-expression">Creating a swift if expression</h2>
 <p>Let’s take a simple example, and start creating our own if expression.</p>
 <pre><code>func example(a: Int, b: Int) -&gt; Int {
