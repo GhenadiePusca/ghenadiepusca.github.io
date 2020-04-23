@@ -17,7 +17,7 @@
       <pubDate>Mon, 20 Apr 2020 00:00:00 +0000</pubDate>
       
       <guid>/blog/functions_in_swift/</guid>
-      <description>Swift is a multi-paradigm language, in light terms meaning you can do both Object Oriented Programming and Functional Programming. Even though it can do both, and even at the same time, in same program, we usually focus most of our attention and care to the Object Oriented part, and ignoring, leaving or take it as granted at functions can offer. And functions have to offer a lot. In this post we&amp;rsquo;ll take a high level look what functions can do, beyond theyre normal usage.</description>
+      <description>Swift is a multi-paradigm language, in light terms meaning you can do both Object Oriented Programming and Functional Programming. Even though it can do both, and even at the same time, in same program, we usually focus most of our attention and care to Object Oriented part, and ignoring, leaving or take it as granted what functions can offer. And functions have to offer a lot. In this post we&amp;rsquo;ll take a high level look what functions can do, beyond their normal usage.</description>
     </item>
     
     <item>

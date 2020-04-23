@@ -99,7 +99,7 @@
                         
 
                         <span class="reading-time middot">
-                            15 minutes
+                            16 minutes
                         </span>
 
                         <div class="d-none d-md-inline tags">
@@ -119,20 +119,21 @@
                     <div class="markdown">
                         
     
-    <p>Swift is a multi-paradigm language, in light terms meaning you can do both Object Oriented Programming and Functional Programming. Even though it can do both, and even at the same time, in same program, we usually focus most of our attention and care to the Object Oriented part, and ignoring, leaving or take it as granted at functions can offer. And functions have to offer a lot.
-In this post we&rsquo;ll take a high level look what functions can do, beyond theyre normal usage. This post will also act as a base for the future posts when we will dive deeper in FP(I&rsquo;ll refer further to functional programming as FP) world with Structure and Interpretation of computer programms book.</p>
+    <p>Swift is a multi-paradigm language, in light terms meaning you can do both Object Oriented Programming and Functional Programming. Even though it can do both, and even at the same time, in same program, we usually focus most of our attention and care to Object Oriented part, and ignoring, leaving or take it as granted what functions can offer. And functions have to offer a lot.
+In this post we&rsquo;ll take a high level look what functions can do, beyond their normal usage. This post will also act as a base for the future posts when we will dive deeper in FP(I&rsquo;ll refer further to functional programming as FP) world with Structure and Interpretation of Computer Programms book.</p>
 <h2 id="what-do-we-know">What do we know</h2>
-<p>You&rsquo;ve most probably heard about FP, and almost for sure it had to do something with map, flatMap, reduce. Maybe someone even said that those are higher order functions. And&hellip; whatever, without looking into more details we use those functions without putting much thought into them. Maybe because higher order functions sound scary.
-More, it is very possible that a lot of us think that map, flatMap are Array specific functionality. Well I sure did, before getting to know what is map in swift, I did now the Map from java, which is a dictionary. Map and flatMap are separate subject we will discuss in another post, in this one we will start with basics.</p>
+<p>You&rsquo;ve most probably heard about FP, and almost for sure it had to do something with map, flatMap, reduce, filter and other buzzwords. Maybe someone even said that those are higher order functions. And&hellip; whatever, without looking into more details we use those functions without putting much thought into them. Maybe because higher order functions sound scary.
+More, it is very possible that a lot of us think that map, flatMap are Array specific functionality. Well I sure did, before getting to know what is map in swift, I did now the Map from java, which is a dictionary. But actually map and flatMap have a more deeper implication(we&rsquo;ll get into this in future posts).
+Aaand, thats it, we&rsquo;ve stoped at those functions used to process arrays. Let&rsquo;s not leave it that way.</p>
 <h2 id="what-is-actually-a-function">What is actually a function?</h2>
-<p>Looking over the internet you may find a lot of definitions of what is a function. But the idea is the same - it is a block of code that encapsulates a given, reusable functionality. We can refer to an object from OOP, which also encapsulates a given/reusable functionality. We&rsquo;ll see that the difference between an object and a function is actually very thin, and throughout the post I will compare a function to an object/class.</p>
-<p>In swift a function &ldquo;usually&rdquo; is of form:</p>
+<p>Looking over the internet you may find a lot of definitions of what is a function. But the idea is the same - it is a block of code that encapsulates a given, reusable functionality. We can refer to an object from OOP, which also encapsulates a given/reusable functionality. We&rsquo;ll see that the difference between an object and a function is actually very small, and throughout the post I will compare a function to an object/class.</p>
+<p>In swift a function usually is of form:</p>
 <pre><code>func &lt;name&gt;(args..) -&gt;&lt;return type&gt;
 </code></pre><p>Comparing to OOP:</p>
 <ul>
 <li>name indentifies the function in same way the name identifies a class</li>
-<li>args are the inputs of the function, in same way class has inputs through the initialiser. However class can define inputs also through it&rsquo;s public properties and/or methods.</li>
-<li>return type is the output of a function, in the same way a class defines public properties and/or method to expose it&rsquo;s outputs.</li>
+<li>args are the inputs of the function, in same way class has inputs through the initialiser. However class can define inputs also through its public properties and/or functions.</li>
+<li>return type is the output of a function, in the same way a class defines public properties and/or method to expose its outputs.</li>
 </ul>
 <h2 id="function-depedencies">Function depedencies</h2>
 <p>There is often a need to use the functionality of another function in the current function. As with classes there are two ways of doing so:</p>
@@ -143,7 +144,7 @@ More, it is very possible that a lot of us think that map, flatMap are Array spe
    }
 
    <span style="color:#66d9ef">func</span> &lt;y&gt;(args...) -&gt; Int {
-       <span style="color:#66d9ef">let</span> someValue = &lt;x&gt;()  <span style="color:#f92672">&lt;---</span> implicit depedency
+       <span style="color:#66d9ef">let</span> someValue = &lt;x&gt;()  <span style="color:#75715e">/* &lt;--- implicit depedency */</span>
        ...
    }
 </code></pre></div></li>
@@ -152,15 +153,15 @@ More, it is very possible that a lot of us think that map, flatMap are Array spe
        ...
    }
 
-   <span style="color:#66d9ef">func</span> &lt;y&gt;(f: () -&gt; Int) -&gt; Int {   <span style="color:#f92672">&lt;---</span> explicit depedency
+   <span style="color:#66d9ef">func</span> &lt;y&gt;(f: () -&gt; Int) -&gt; Int {  <span style="color:#75715e">/* &lt;--- explicit depedency */</span>
        <span style="color:#66d9ef">let</span> someValue = f()
        ...
    }
 </code></pre></div></li>
 </ul>
-<p>Implicit depedency is very similar between functions and objects, however, explcit dependency in function has one crucial difference:
-<strong>It forces polymorphism</strong></p>
-<p>Let&rsquo;s compare with an example from OOP.</p>
+<p>Implicit depedency is very similar between functions and objects, however, explicit dependency in function has one crucial difference:</p>
+<p><strong>It forces polymorphism</strong></p>
+<p>Let&rsquo;s compare with OOP with an example.</p>
 <p>We can do it this way - requiring in intialiser an instance of a concrete class</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">X</span> {
     <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">process</span>() -&gt; Int {...}
@@ -171,7 +172,7 @@ More, it is very possible that a lot of us think that map, flatMap are Array spe
         ...
     }
 }
-</code></pre></div><p>Or, require a instance of a class who does conform to a protocol:</p>
+</code></pre></div><p>Or, require a instance of a class which conforms to a protocol:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#66d9ef">protocol</span> <span style="color:#a6e22e">P</span> {
     <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">process</span>() -&gt; Int
 }
@@ -185,11 +186,11 @@ More, it is very possible that a lot of us think that map, flatMap are Array spe
         ...
     }
 }
-</code></pre></div><p>It is well known that with second approach we enable polymorphic behaviour of a class Y - we can inject different behaviour with a different object of a class that does conform to protocol P.</p>
+</code></pre></div><p>It is well known that with second approach we enable polymorphic behaviour of a class Y - we can inject different behaviour with a different object of a class which conforms to protocol P.</p>
 <p>Now with functions, there is no way you can require to have as an argument a concrete function:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Y</span>() {...}
 
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">X</span>(y: Y) { ... } <span style="color:#f92672">&lt;---</span> you can<span style="color:#960050;background-color:#1e0010">&#39;</span>t <span style="color:#66d9ef">do</span> this
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">X</span>(y: Y) { ... } <span style="color:#75715e">/* &lt;--- you can&#39;t do this */</span>
 </code></pre></div><p>Instead functions do force you to define a blueprint of a function through a method signature.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">X</span>(f: () -&gt; Int) { ... }
 </code></pre></div><p>Where:</p>
@@ -274,7 +275,7 @@ If we look closely we will see that:</p>
 </ul>
 <p>Both are different name for the same things.</p>
 <h3 id="call-by-value--applicative-order">Call by value / applicative order</h3>
-<p>In this case, argumets of a function are first evaluated and then with the result function is applied.</p>
+<p>In this case, argumets of a function are first evaluated and then function is applied.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">f</span>(a: Int) -&gt; Int {
     <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">5</span> <span style="color:#f92672">+</span> a
 }
@@ -284,12 +285,12 @@ f(a: <span style="color:#ae81ff">9</span><span style="color:#f92672">-</span><sp
 f(a: <span style="color:#ae81ff">4</span>)
 <span style="color:#75715e">/// and then</span>
 <span style="color:#ae81ff">5</span><span style="color:#f92672">+</span><span style="color:#ae81ff">4</span>
-</code></pre></div><p>In example above, first the value of 9-5 will be computed, and the function f will be actually applied with the value of a being 4. Thus we can also say that:</p>
+</code></pre></div><p>In example above, first the value of 9-5 will be computed, and then function <code>f</code> will be actually applied with the value of 4. Thus we can also say that:</p>
 <blockquote>
 <p>With call by value / applicative order, arguments of a function are evaluated before those are used.</p>
 </blockquote>
 <h3 id="call-by-name---normal-order">Call by name /  normal order</h3>
-<p>In this case, function is applied/expanded and then the value of the arguments are evaluated. As in Scala, in Swift we can achieve this by having as an input a function:</p>
+<p>In this case, function is first applied/expanded and then the value of the arguments are evaluated. As in Scala, in Swift we can achieve this by having as an input a function:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">f</span>(f: () -&gt; Int) -&gt; Int {
     <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">5</span> <span style="color:#f92672">+</span> f()
 }
@@ -302,8 +303,8 @@ f(f: { <span style="color:#ae81ff">9</span><span style="color:#f92672">-</span><
 </code></pre></div><blockquote>
 <p>With call by name / normal order, arguments of a function are not evaluated until those are needed. We can say that it is lazy evaluation.</p>
 </blockquote>
-<p>So what are the benefits of one over another?
-With call by value / applicative order we can make the result of the argument reusable, thus improving the program performance:</p>
+<p>So what are the benefits of one over another?</p>
+<p>With call by value / applicative order we can make the result of the argument reusable, thus improving the program performance:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">f</span>(a: Int) -&gt; Int {
     <span style="color:#66d9ef">let</span> x = <span style="color:#ae81ff">10</span> <span style="color:#f92672">+</span> a
     <span style="color:#66d9ef">let</span> y = <span style="color:#ae81ff">10</span> <span style="color:#f92672">-</span> a
@@ -349,9 +350,9 @@ f(x: <span style="color:#f92672">-</span><span style="color:#ae81ff">4</span>, a
 
 f(x: <span style="color:#f92672">-</span><span style="color:#ae81ff">4</span>, a: { <span style="color:#ae81ff">9</span><span style="color:#f92672">-</span><span style="color:#ae81ff">5</span> })
 </code></pre></div><p>We can see that with call by name / normal order we will calculate the value only when it is needed, while with call by value / applicative order we will calculate the value of the argument a even if it will not be needed.
-Ofcourse the example above are oversimplified, and most of the times we would use call by value / applicative order. But it also can be a greate improvement for your program to identify the cases when an call by name / normal order would be better. Usually you would do this to avoid allocation of some resources until those are needed. An example would be when you do some request and on error to show an error banner, you will instantiate the error banner on errorCompletion(or something like this) instead of passing an instance directly to the calling function.</p>
+Ofcourse the example above is oversimplified, and most of the times we would use call by value / applicative order. But it also can be a greate improvement for your program to identify the cases when an call by name / normal order would be better. Usually you would do this to avoid allocation of some resources until those are needed. An example would be when you do some request and on error to show an error banner, you will instantiate the error banner on errorCompletion(or something like this) instead of passing an instance directly to the calling function.</p>
 <h2 id="function-as-return-type-of-another-function">Function as return type of another function</h2>
-<p>Functions can return another function as a result. In this it will act more as a builder, the primary function being an instantiator of the function to be returned:</p>
+<p>Functions can return another function as a result. In this case it will act more as a builder - the primary function being an instantiator of the function to be returned:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">makePrinter</span>(withPrefix: String) -&gt; (String) -&gt; Void {
     <span style="color:#66d9ef">return</span> { append <span style="color:#66d9ef">in</span>
          print(<span style="color:#66d9ef">prefix</span> <span style="color:#f92672">+</span> append)
@@ -411,14 +412,16 @@ printer.show(<span style="color:#e6db74">&#34;Coders&#34;</span>)
 } 
 </code></pre></div><p>If you are a bit confused why nested function is a closure, lets refer to the apple documentation:</p>
 <blockquote>
-<p>Closures are self-contained blocks of functionality that can be passed around and used in your code.
-Thats it - nested functions(and global functions) are special cases of closures. Thus all nested/global functions do have the next
-important functionality:
-Closures can capture and store references to any constants and variables from the context in which they are defined.
-We&rsquo;ll make use of this behaviour in the next section.</p>
+<p>Closures are self-contained blocks of functionality that can be passed around and used in your code.</p>
 </blockquote>
+<p>Thats it - nested functions(and global functions) are special cases of closures. Thus all nested/global functions do have the next
+important functionality:</p>
+<blockquote>
+<p>Closures can capture and store references to any constants and variables from the context in which they are defined.</p>
+</blockquote>
+<p>We&rsquo;ll make use of this behaviour in the next section.</p>
 <p>Most of us used closure expressions. And we&rsquo;ve used it so much, that we started to refer to it just as closure(even though it is not 100% correct).
-Most of it&rsquo;s used is related to completion handlers, and again, by being so common, we&rsquo;ve started to call the completion handler itself a closure, while it is just a function signature. Thus both of the below implementation are correct:</p>
+Most of its usages is related to completion handlers, and again, by being so common, we&rsquo;ve started to call the completion handler itself a closure, while it is just a function signature - thus both of the below implementations are correct:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">apiCall</span>(params: ..., completionHandler: (Result&lt;Data, Error&gt;) -&gt; Void) {
     ...
 }
@@ -434,8 +437,8 @@ apiCall(params..., completionHandler: handleCompletion)
 <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">handleCompletion</span>(<span style="color:#66d9ef">_</span> result: Result&lt;Data, Error&gt;) {
     ...
 }
-</code></pre></div><p>Both completion handler are exactly the same, main difference being that one - closure expression - is so called unnamed function whole handleCompletion is nammed function. Thus in this case closure expression is just used as convenience to create a function in place.
-Another example that makes heavy use of closure expressions is <code>lazy var</code></p>
+</code></pre></div><p>Both completion handlers are exactly the same, main difference being that, one - closure expression - is so called unnamed function while handleCompletion is nammed function. Thus in this case closure expression is just used as a convenience to create a function in place.</p>
+<p>Another example that makes heavy use of closure expressions is <code>lazy var</code></p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">   <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">A</span> {
        <span style="color:#66d9ef">lazy</span> <span style="color:#66d9ef">var</span> cl: Int = {
            <span style="color:#ae81ff">9</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">5</span>
@@ -447,12 +450,11 @@ Another example that makes heavy use of closure expressions is <code>lazy var</c
            <span style="color:#ae81ff">9</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">5</span>
        }
    }
-</code></pre></div><p>Again both are the same, and closure is used as unnamed function, that can be created in place without the need of creating a new named function. Though having named function will generally be better for code readability and maintance.</p>
-<p>So, from closures we do mostly use <code>closure expression</code> and even more most of casses are just for convenience of creating an unnamed function. But we can do with closure, much, much more. Let&rsquo;s see below.</p>
-<h2 id="object-vs-function">Object vs function</h2>
-<p>As we see those are very similar, and here comes the question - can we say that the function returned by makePrinter is an object actually?
-Let&rsquo;s see below
-Let&rsquo;s take a more complex example:</p>
+</code></pre></div><p>Again both are the same, and closure is used as unnamed function that can be created in place without the need of creating a new named function. Though having named function will generally be better for code readability and maintance.</p>
+<p>So, from closures we do mostly use <code>closure expression</code>, and even more, most of casses are just for convenience of creating an unnamed function. But we can do with closures, much, much more. Let&rsquo;s see below.</p>
+<h2 id="class-vs-function">Class vs function</h2>
+<p>We saw with printer example that function was able to do the same thing as a class. Can we take it further and say that we don&rsquo;t need a class to create an object?
+Let&rsquo;s take a famous example of banking account, and see if there is a functional difference between objects created with a classs and an object created with functions.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">BankAccount</span> {
     <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">var</span> balance: Int
     
@@ -481,10 +483,10 @@ Let&rsquo;s take a more complex example:</p>
 ba.deposit(<span style="color:#ae81ff">5</span>)
 ba.widthdrawl(<span style="color:#ae81ff">12</span>)
 <span style="color:#66d9ef">let</span> balance = ba.getBalance() <span style="color:#75715e">/// outputs 3</span>
-</code></pre></div><p>A simple implementation of a bank account with a class, can we completely get rid of the class and have only a function?
-Let&rsquo;s do it step by step. First we have to identifit what is actually the functionality of a bank account. From the class we see that
-there are 3 functions - getBalance, deposit and widthdrawl. It&rsquo;s fair to say that we can describe a bank account with those 3 functions.
-We can group those 3 functions in a tuple:</p>
+</code></pre></div><p>A simple implementation of a bank account with a class, can we completely get rid of the class and have only a function?</p>
+<p>Let&rsquo;s do it step by step. First we have to identify what is actually the functionality of a bank account.</p>
+<p>From the class we see that there are 3 functions - getBalance, deposit and widthdrawl. It&rsquo;s fair to say that we can describe a bank account with those 3 functions.</p>
+<p>We can group those 3 functions in a tuple and define the bank account object:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#66d9ef">typealias</span> FBankAccount = (getBalance: () -&gt; Int,
                           deposit: (Int) -&gt; Void,
                           widthdrawl: (Int) -&gt; Void)
@@ -507,15 +509,16 @@ We can group those 3 functions in a tuple:</p>
     }
     <span style="color:#66d9ef">return</span> (getBalance, deposit, widthdrawl)
 }
-</code></pre></div><p>Note the ???. In deposit and widthdrawl it is needed to modify the balance. We most of the times do create objects from classes for those to encapsulate some state, if there is no state involvevd, then we most probably will declare functions as static, and the class will just as an name space.
-At least from my perspective objects are means to encapsulate a state and allow operations on that state. If we can describe state in a function then we can say that we did describe an object with functions without the need for a class.
-So how can we have state inside a function?
-From apple docs:</p>
+</code></pre></div><p>Note the ???. In deposit and widthdrawl it is needed to modify the balance.
+Most of the times we create objects from classes for those to encapsulate some state, if there is no state involvevd, then we most probably will declare functions as static, and the class will just as an name space.</p>
+<p>At least from my perspective objects are means to encapsulate a state and allow operations on that state. If we can describe state in a function then we can say that we did describe an object with functions without the need for a class.</p>
+<p>So how can we have state inside a function?
+As we previosuly saw, closures can capture values. Let&rsquo;s complete the info we do have with some more form the Apple docs:</p>
 <blockquote>
-<p>A nested function can capture any of its outer function’s arguments, variables, constants.
-The function can then refer to and modify the values of those constants and variables from within its body, even if the original scope that defined the constants and variables no longer exists.</p>
+<p>A closure can capture any of its outer function’s arguments, variables, constants.
+The closure can then refer to and modify the values of those constants and variables from within its body, even if the original scope that defined the constants and variables no longer exists.</p>
 </blockquote>
-<p>With banking account, we do have 3 nested functions. And once makeBankAccount returns those 3 functions will leave the makeBankAccount scope. Thus we can define state inside the makeBankAcount function and 3 nested functions will capture this state:</p>
+<p>With banking account, we do have 3 nested functions(which, lets not forget, are closures). And once makeBankAccount returns, those 3 functions will leave the makeBankAccount scope, but the state will be captured.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">makeBankAcount</span>(withInitialBalance balance: Int) -&gt; FBankAccount {
     <span style="color:#75715e">/// Private state</span>
     <span style="color:#66d9ef">var</span> currentBalance = balance
@@ -542,10 +545,10 @@ The function can then refer to and modify the values of those constants and vari
 fBankAccount.deposit(<span style="color:#ae81ff">5</span>)
 fBankAccount.widthdrawl(<span style="color:#ae81ff">12</span>)
 <span style="color:#66d9ef">let</span> balance = fBankAccount.getBalance() <span style="color:#75715e">/// outputs 3</span>
-</code></pre></div><p>Note that currentBalance is private implicetly without, and it is visible only inside the makeBankAcount scope and 3 nested functions.
-We can safely say that fBankAccount is in the same manner an object as the bank account created with a class.
-But, you my ask, what about subclassing?
-Suppose we do want to have a bank account with interest applied on deposit.
+</code></pre></div><p>Note that currentBalance is private implicitly and it is visible only inside the makeBankAcount scope and 3 nested functions.
+And I think now we can safely say that fBankAccount is in the same manner an object as the bank account created with a class.</p>
+<p>But, you my ask, what about subclassing?</p>
+<p>Suppose we do want to have a bank account with interest applied on deposit.
 In OOP we&rsquo;ll do something like this:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SavingsBankAccount</span>: BankAccount {
     <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">let</span> interestRate: Double
@@ -599,7 +602,7 @@ In OOP we&rsquo;ll do something like this:</p>
     </li>
     <li><a href="#function-as-return-type-of-another-function">Function as return type of another function</a></li>
     <li><a href="#closures">Closures</a></li>
-    <li><a href="#object-vs-function">Object vs function</a></li>
+    <li><a href="#class-vs-function">Class vs function</a></li>
   </ul>
 </nav>
                     </div>
