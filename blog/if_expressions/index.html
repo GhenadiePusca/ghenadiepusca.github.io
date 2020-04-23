@@ -99,7 +99,7 @@
                         
 
                         <span class="reading-time middot">
-                            9 minutes
+                            8 minutes
                         </span>
 
                         <div class="d-none d-md-inline tags">
@@ -217,12 +217,13 @@ Now from here on, we do want to create our own if expression to be used:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">example</span>(a: Int, b: Int) -&gt; Int {
  <span style="color:#66d9ef">return</span> a <span style="color:#f92672">*</span> If(a <span style="color:#f92672">&gt;</span> b, a <span style="color:#f92672">-</span> b, b <span style="color:#f92672">-</span> a)
 }
-</code></pre></div><p>I’d say it looks better than ternary operator. But this implementation does not mirror completely the functionality of the ternary operator, ternary operator has short circuit evaluation - false branch will not be evaluated if the condition is true and vice versa. Our If expression currently does not have this behaviour, we can achieve this by delaying the execution using closures:</p>
+</code></pre></div><p>I’d say it looks better than ternary operator. But this implementation does not mirror completely the functionality of the ternary operator, ternary operator has short circuit evaluation - false branch will not be evaluated if the condition is true and vice versa. Our If expression currently does not have this behaviour.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">If</span>(<span style="color:#66d9ef">_</span> predicate: Bool,
         <span style="color:#66d9ef">_</span> consequent: () -&gt; Int, 
         <span style="color:#66d9ef">_</span> alternative: () -&gt; Int) -&gt; Int {
  predicate ? consequent() : alternative()
 }
+
 <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">example</span>(a: Int, b: Int) -&gt; Int {
  <span style="color:#66d9ef">return</span> a <span style="color:#f92672">*</span> If(a <span style="color:#f92672">&gt;</span> b, { a <span style="color:#f92672">-</span> b }, { b <span style="color:#f92672">-</span> a })
 }
@@ -307,6 +308,18 @@ Having those components in place, we will be able to conquer the examples and ex
                                     
                                 </div>
                                 <div class="col-12 col-md-6">
+                                    
+                                        <div class="mx-0 mx-md-4 mt-4 text-right">
+                                            <a href="/blog/functions_in_swift/">
+                                                <span class="text">Functions in Swift</span>
+                                                <span class="icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 477.175 477.175">
+        <path d="M360.731,229.075l-225.1-225.1c-5.3-5.3-13.8-5.3-19.1,0s-5.3,13.8,0,19.1l215.5,215.5l-215.5,215.5 c-5.3,5.3-5.3,13.8,0,19.1c2.6,2.6,6.1,4,9.5,4c3.4,0,6.9-1.3,9.5-4l225.1-225.1C365.931,242.875,365.931,234.275,360.731,229.075z" />
+    </svg>
+</span>
+
+                                            </a>
+                                        </div>
                                     
                                 </div>
                             </div>
