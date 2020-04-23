@@ -122,8 +122,8 @@
     <p>Swift is a multi-paradigm language, in light terms meaning you can do both Object Oriented Programming and Functional Programming. Even though it can do both, and even at the same time, in same program, we usually focus most of our attention and care to Object Oriented part, and ignoring, leaving or take it as granted what functions can offer. And functions have to offer a lot.
 In this post we&rsquo;ll take a high level look what functions can do, beyond their normal usage. This post will also act as a base for the future posts when we will dive deeper in FP(I&rsquo;ll refer further to functional programming as FP) world with Structure and Interpretation of Computer Programms book.</p>
 <h2 id="what-do-we-know">What do we know</h2>
-<p>You&rsquo;ve most probably heard about FP, and almost for sure it had to do something with map, flatMap, reduce, filter and other buzzwords. Maybe someone even said that those are higher order functions. And&hellip; whatever, without looking into more details we use those functions without putting much thought into them. Maybe because higher order functions sound scary.
-More, it is very possible that a lot of us think that map, flatMap are Array specific functionality. Well I sure did, before getting to know what is map in swift, I did now the Map from java, which is a dictionary. But actually map and flatMap have a more deeper implication(we&rsquo;ll get into this in future posts).
+<p>You&rsquo;ve most probably heard about FP, and almost for sure it had to do something with map, flatMap, reduce, filter and other buzzwords. Maybe someone even said that those are higher order functions. And&hellip; whatever, without looking into more details we use those functions without putting much thought into them(maybe because higher order functions sound scary).
+More, it is very possible that a lot of us think that map, flatMap are Array specific functionality. Well I sure did, before getting to know what is map in swift, I did now the Map from java, which is a dictionary. But actually map and flatMap have a more deeper implication(we&rsquo;ll get into this in future posts).<br>
 Aaand, thats it, we&rsquo;ve stoped at those functions used to process arrays. Let&rsquo;s not leave it that way.</p>
 <h2 id="what-is-actually-a-function">What is actually a function?</h2>
 <p>Looking over the internet you may find a lot of definitions of what is a function. But the idea is the same - it is a block of code that encapsulates a given, reusable functionality. We can refer to an object from OOP, which also encapsulates a given/reusable functionality. We&rsquo;ll see that the difference between an object and a function is actually very small, and throughout the post I will compare a function to an object/class.</p>
@@ -160,7 +160,9 @@ Aaand, thats it, we&rsquo;ve stoped at those functions used to process arrays. L
 </code></pre></div></li>
 </ul>
 <p>Implicit depedency is very similar between functions and objects, however, explicit dependency in function has one crucial difference:</p>
-<p><strong>It forces polymorphism</strong></p>
+<blockquote>
+<p>Function injection forces polymorphic behaviour</p>
+</blockquote>
 <p>Let&rsquo;s compare with OOP with an example.</p>
 <p>We can do it this way - requiring in intialiser an instance of a concrete class</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">X</span> {
@@ -227,10 +229,8 @@ If we look closely we will see that:</p>
 
 <span style="color:#66d9ef">let</span> y1 = Y(X())
 <span style="color:#66d9ef">let</span> y2 = Y(Z())
-
-</code></pre></div><p>VS:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">process</span>() -&gt; Int {
+</code></pre></div><p>vs:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">process</span>() -&gt; Int {
     ...
 }
 
@@ -510,8 +510,8 @@ ba.widthdrawl(<span style="color:#ae81ff">12</span>)
     <span style="color:#66d9ef">return</span> (getBalance, deposit, widthdrawl)
 }
 </code></pre></div><p>Note the ???. In deposit and widthdrawl it is needed to modify the balance.
-Most of the times we create objects from classes for those to encapsulate some state, if there is no state involvevd, then we most probably will declare functions as static, and the class will just as an name space.</p>
-<p>At least from my perspective objects are means to encapsulate a state and allow operations on that state. If we can describe state in a function then we can say that we did describe an object with functions without the need for a class.</p>
+Most of the times we create objects from classes for those to encapsulate some state, if there is no state involvevd, then we most probably will declare functions as static, and the class will just act as a name space.</p>
+<p>At least from my perspective objects are means to encapsulate a state and allow operations on that state. If we can describe state in a function, then we can say that we did describe an object with functions without the need for a class.</p>
 <p>So how can we have state inside a function?
 As we previosuly saw, closures can capture values. Let&rsquo;s complete the info we do have with some more form the Apple docs:</p>
 <blockquote>
@@ -579,7 +579,7 @@ In OOP we&rsquo;ll do something like this:</p>
 <li>We saw the power of closure, and how underused it is, but as always with great power comes great responsibility.</li>
 <li>We saw that functions have a lot to give, and since most of programs functionality is embeded in functions, leveraging the functionality of functions can be a great tool in your arsenal.</li>
 </ul>
-<p>By no means, I do advocate that FP is better than OOP and viceversa. Both are powerful, and I think we can use the best of two worlds to achieve more. Somehow we are getting a bit scared, confused and other funny stuff, when we do hear about functional programming. I guess it is the same when FP guys do hear about OOP. As we saw in this post the line between functions and objects is very thin, so don&rsquo;t be afraid to use some of the FP goodness in your OOP projects, let it be another tool you can use to build great things.</p>
+<p>By no means, I do advocate that FP is better than OOP and viceversa. Both are powerful, and I think we can use the best of two worlds to achieve more. Somehow we are getting a bit scared, confused and other funny stuff, when we do hear about functional programming. I guess it is the same when FP programers hear about OOP. As we saw in this post the line between functions and objects/classes is very thin, so don&rsquo;t be afraid to use some of the FP in your OOP projects, let it be another tool you can use to build great things.</p>
 <p>Till next time!</p>
 
 
