@@ -19,15 +19,26 @@
       <guid>/blog/if_expressions/</guid>
       <description>This blogpost is a part of going through the SICP book, you can get a free copy from:
 https://web.mit.edu/alexmv/6.037/sicp.pdf
-A while ago, I’ve heard about functional programming. Being in the pursuit of improving my skills as a programmer, all of the functional methodologies and rules, seem to be of a great value. Thus, I embark in a journey of learning functional programming principles, by trying to implement all of them in Swift programming language.</description>
+I&amp;rsquo;ve started to be interested in functional programming principles some time ago. I&amp;rsquo;ve learned from here and there, getting to know more and more, about functional programming. And to be fair, I want to continue getting more advanced with FP. As we saw in two previous introductory posts, Swift allows us to also do functional programming, and that it can blend quite well in OOP world.</description>
     </item>
     
     <item>
-      <title>Functions in Swift</title>
-      <link>/blog/functions_in_swift/</link>
+      <title>Functions in Swift Part 2</title>
+      <link>/blog/functions_in_swift_p2/</link>
+      <pubDate>Wed, 22 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/functions_in_swift_p2/</guid>
+      <description>In previous post we&amp;rsquo;ve started covering the basics of what functions can do. In this post we&amp;rsquo;ll start doing more advanced things.
+Function as return type of another function Functions can return another function as a result. In this case it will act more as a builder - the primary function being an instantiator of the function to be returned:
+func makePrinter(withPrefix: String) -&amp;gt; (String) -&amp;gt; Void { return { append in print(prefix + append) } } // or func makePrinter(withPrefix: String) -&amp;gt; (String) -&amp;gt; Void { /// Also known in swift as nested function func show(_ append: String) { print(prefix + append) } return show } let printer = makePrinter(withPrefix: &amp;#34;Hello&amp;#34;) printer(&amp;#34;World&amp;#34;) /// prints - Hello World printer(&amp;#34;Coders&amp;#34;) /// prints - Hello coders To make a reference to OOP, the code above can be translated as:</description>
+    </item>
+    
+    <item>
+      <title>Functions in Swift Part 1</title>
+      <link>/blog/functions_in_swift_p1/</link>
       <pubDate>Tue, 21 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>/blog/functions_in_swift/</guid>
+      <guid>/blog/functions_in_swift_p1/</guid>
       <description>Swift is a multi-paradigm language, in light terms meaning you can do both Object Oriented Programming and Functional Programming. Even though it can do both, and even at the same time, in same program, we usually focus most of our attention and care to Object Oriented part, and ignoring, leaving or take it as granted what functions can offer. And functions have to offer a lot. In this post we&amp;rsquo;ll take a high level look what functions can do, beyond their normal usage.</description>
     </item>
     

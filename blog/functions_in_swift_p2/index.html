@@ -1,0 +1,545 @@
+<!doctype html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Functions in Swift Part 2 - Ghenadie Pusca</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="referrer" content="no-referrer">
+    <meta name="description" content="ghenadiepusca">
+    <meta property="og:description" content="ghenadiepusca" />
+
+    
+        <meta property="twitter:site" content="@GhenadiePusca">
+    
+
+    <meta property="twitter:title" content="Functions in Swift Part 2" />
+    <meta property="twitter:card" content="summary" />
+    <meta property="twitter:description" content="ghenadiepusca" />
+
+    
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="/css/main.css" />
+
+    
+        <link rel="stylesheet" href="/css/highlight.css" />
+    
+
+    
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/progressively/1.2.5/progressively.min.css" integrity="sha256-xbqLYBMsjpuCihs+3Fgp/MFMtPdo2SWKoOjEWOqR4X0=" crossorigin="anonymous" />
+    
+
+    <link href='' rel="alternate" type="application/rss+xml" title="Ghenadie Pusca" />
+    <link href="https://fonts.googleapis.com/css?family=Fira+Code|Merriweather+Sans:400,700|Merriweather:400,700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    
+    
+
+    
+
+    
+
+<div class="my-4 my-md-5 header">
+    <div class="container">
+        <div class="row">
+            <div class="col-auto d-none d-md-block">
+                
+                    <a href="/">
+                        <img class="logo" src="/img/favicon.png" alt="logo">
+                    </a>
+                
+            </div>
+            <div class="col-auto align-self-center mr-auto">
+                <a href="/">
+                    <h1 class="font-weight-bold name">
+                        Ghenadie Pusca
+                    </h1>
+                </a>
+
+                <ul class="nav nav-primary">
+                    
+
+                    
+                </ul>
+
+                <ul class="nav nav-secondary">
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <div class="content">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div
+                    
+                    class="col-md-9 col-lg-9"
+                    
+                >
+                    <h1 class="mx-0 mx-md-4">
+                        Functions in Swift Part 2
+                    </h1>
+
+                    <div class="mb-4 mb-md-5 meta">
+                        <span class="date" title='Wed Apr 22 2020 00:00:00 UTC'>
+                            April 22, 2020
+                        </span>
+
+                        
+                            
+                        
+
+                        <span class="reading-time middot">
+                            8 minutes
+                        </span>
+
+                        <div class="d-none d-md-inline tags">
+                            <ul class="list-unstyled d-inline">
+                                
+                            </ul>
+                        </div>
+
+                        <div class="d-none d-md-inline tags">
+                            <ul class="list-unstyled d-inline">
+                                
+                                
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="markdown">
+                        
+    
+    <p>In previous post we&rsquo;ve started covering the basics of what functions can do. In this post we&rsquo;ll start doing more advanced things.</p>
+<h2 id="function-as-return-type-of-another-function">Function as return type of another function</h2>
+<p>Functions can return another function as a result. In this case it will act more as a builder - the primary function being an instantiator of the function to be returned:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">makePrinter</span>(withPrefix: String) -&gt; (String) -&gt; Void {
+    <span style="color:#66d9ef">return</span> { append <span style="color:#66d9ef">in</span>
+         print(<span style="color:#66d9ef">prefix</span> <span style="color:#f92672">+</span> append)
+    }
+}
+
+<span style="color:#75715e">// or</span>
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">makePrinter</span>(withPrefix: String) -&gt; (String) -&gt; Void {
+    <span style="color:#75715e">/// Also known in swift as nested function</span>
+    <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">show</span>(<span style="color:#66d9ef">_</span> append: String) {
+         print(<span style="color:#66d9ef">prefix</span> <span style="color:#f92672">+</span> append)
+    }
+
+    <span style="color:#66d9ef">return</span> show
+}
+
+<span style="color:#66d9ef">let</span> printer = makePrinter(withPrefix: <span style="color:#e6db74">&#34;Hello&#34;</span>)
+printer(<span style="color:#e6db74">&#34;World&#34;</span>)
+<span style="color:#75715e">/// prints - Hello World</span>
+printer(<span style="color:#e6db74">&#34;Coders&#34;</span>)
+<span style="color:#75715e">/// prints - Hello coders</span>
+</code></pre></div><p>To make a reference to OOP, the code above can be translated as:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Printer</span> {
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">let</span> prefix: String
+    <span style="color:#66d9ef">init</span>(withPrefix <span style="color:#66d9ef">prefix</span>: String) {
+        <span style="color:#66d9ef">self</span>.<span style="color:#66d9ef">prefix</span> = <span style="color:#66d9ef">prefix</span>
+    }
+
+    <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">show</span>(<span style="color:#66d9ef">_</span> append: String) {
+        print(<span style="color:#66d9ef">prefix</span> <span style="color:#f92672">+</span> append)
+    }
+}
+
+<span style="color:#66d9ef">let</span> printer = Printer(withPrefix: <span style="color:#e6db74">&#34;Hello&#34;</span>)
+printer.show(<span style="color:#e6db74">&#34;World&#34;</span>)
+<span style="color:#75715e">/// prints - Hello World</span>
+printer.show(<span style="color:#e6db74">&#34;Coders&#34;</span>)
+<span style="color:#75715e">/// prints - Hello coders</span>
+</code></pre></div><h2 id="closures">Closures</h2>
+<p>In previous examples we encountered two types of closures:</p>
+<ul>
+<li>closure expression</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">  f(x: <span style="color:#f92672">-</span><span style="color:#ae81ff">4</span>, a: { <span style="color:#ae81ff">9</span><span style="color:#f92672">-</span><span style="color:#ae81ff">5</span> })
+  <span style="color:#75715e">/// Here { 9 - 5 } is a closure expressions</span>
+</code></pre></div><ul>
+<li>nested function</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">makePrinter</span>(withPrefix: String) -&gt; (String) -&gt; Void {
+    <span style="color:#75715e">/// Nested function</span>
+    <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">show</span>(<span style="color:#66d9ef">_</span> append: String) {
+         print(<span style="color:#66d9ef">prefix</span> <span style="color:#f92672">+</span> append)
+    }
+
+    <span style="color:#66d9ef">return</span> show
+}
+</code></pre></div><p>If you are a bit confused why nested function is a closure, lets refer to the apple documentation:</p>
+<blockquote>
+<p>Closures are self-contained blocks of functionality that can be passed around and used in your code.</p>
+</blockquote>
+<p>Thats it - nested functions(and global functions) are special cases of closures. Thus all nested/global functions do have the next
+important functionality:</p>
+<blockquote>
+<p>Closures can capture and store references to any constants and variables from the context in which they are defined.</p>
+</blockquote>
+<p>We&rsquo;ll make use of this behaviour in the next section.</p>
+<p>Most of us used closure expressions. And we&rsquo;ve used it so much, that we started to refer to it just as closure(even though it is not 100% correct).
+Most of its usages is related to completion handlers, and again, by being so common, we&rsquo;ve started to call the completion handler itself a closure, while it is just a function signature - thus both of the below implementations are correct:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">apiCall</span>(params: ..., completionHandler: (Result&lt;Data, Error&gt;) -&gt; Void) {
+    ...
+}
+
+apiCall(params..., completionHandler: { result <span style="color:#66d9ef">in</span>
+
+})
+
+<span style="color:#75715e">/// and</span>
+
+apiCall(params..., completionHandler: handleCompletion)
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">handleCompletion</span>(<span style="color:#66d9ef">_</span> result: Result&lt;Data, Error&gt;) {
+    ...
+}
+</code></pre></div><p>Both completion handlers are exactly the same, main difference being that, one - closure expression - is so called unnamed function while handleCompletion is nammed function. Thus in this case closure expression is just used as a convenience to create a function in place.</p>
+<p>Another example that makes heavy use of closure expressions is <code>lazy var</code></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">   <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">A</span> {
+       <span style="color:#66d9ef">lazy</span> <span style="color:#66d9ef">var</span> cl: Int = {
+           <span style="color:#ae81ff">9</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">5</span>
+       }()
+
+       <span style="color:#66d9ef">lazy</span> <span style="color:#66d9ef">var</span> f: Int = initF()
+
+       <span style="color:#66d9ef">private</span> function initF() -&gt; Int {
+           <span style="color:#ae81ff">9</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">5</span>
+       }
+   }
+</code></pre></div><p>Again both are the same, and closure is used as unnamed function that can be created in place without the need of creating a new named function. Though having named function will generally be better for code readability and maintance.</p>
+<p>So, from closures we do mostly use <code>closure expression</code>, and even more, most of casses are just for convenience of creating an unnamed function. But we can do with closures, much, much more. Let&rsquo;s see below.</p>
+<h2 id="class-vs-function">Class vs function</h2>
+<p>We saw with printer example that function was able to do the same thing as a class. Can we take it further and say that we don&rsquo;t need a class to create an object?
+Let&rsquo;s take a famous example of banking account, and see if there is a functional difference between objects created with a classs and an object created with functions.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">BankAccount</span> {
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">var</span> balance: Int
+
+    <span style="color:#66d9ef">init</span>(initialBalance: Int) {
+        balance = initialBalance
+    }
+
+    <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">getBalance</span>() -&gt; Int {
+        balance
+    }
+
+    <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">deposit</span>(<span style="color:#66d9ef">_</span> amount: Int) {
+        balance <span style="color:#f92672">+=</span> amount
+    }
+
+    <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">widthdrawl</span>(<span style="color:#66d9ef">_</span> amount: Int) {
+        <span style="color:#66d9ef">guard</span> amount <span style="color:#f92672">&lt;</span> balance <span style="color:#66d9ef">else</span> {
+            <span style="color:#66d9ef">return</span>
+        }
+
+        balance <span style="color:#f92672">-=</span> amount
+    }
+}
+
+<span style="color:#66d9ef">let</span> ba = BankAccount(initialBalance: <span style="color:#ae81ff">10</span>)
+ba.deposit(<span style="color:#ae81ff">5</span>)
+ba.widthdrawl(<span style="color:#ae81ff">12</span>)
+<span style="color:#66d9ef">let</span> balance = ba.getBalance() <span style="color:#75715e">/// outputs 3</span>
+</code></pre></div><p>A simple implementation of a bank account with a class, can we completely get rid of the class and have only a function?</p>
+<p>Let&rsquo;s do it step by step. First we have to identify what is actually the functionality of a bank account.</p>
+<p>From the class we see that there are 3 functions - getBalance, deposit and widthdrawl. It&rsquo;s fair to say that we can describe a bank account with those 3 functions.</p>
+<p>We can group those 3 functions in a tuple and define the bank account object:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#66d9ef">typealias</span> FBankAccount = (getBalance: () -&gt; Int,
+                          deposit: (Int) -&gt; Void,
+                          widthdrawl: (Int) -&gt; Void)
+</code></pre></div><p>What about the initialiser from the class? We saw previously that we can have functions as builders, we will need something like this:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">makeBanckAcount</span>(withInitialBalance balance: Int) -&gt; FBankAccount {
+    ...
+}
+</code></pre></div><p>Then:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">makeBankAcount</span>(withInitialBalance balance: Int) -&gt; FBankAccount {
+    <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">getBalance</span>() -&gt; Int {
+        balance
+    }
+
+    <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">deposit</span>(<span style="color:#66d9ef">_</span> amount: Int) {
+        ??? <span style="color:#75715e">/// state change</span>
+    }
+
+    <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">widthdrawl</span>(<span style="color:#66d9ef">_</span> amount: Int) {
+        ??? <span style="color:#75715e">/// state change</span>
+    }
+    <span style="color:#66d9ef">return</span> (getBalance, deposit, widthdrawl)
+}
+</code></pre></div><p>Note the ???. In deposit and widthdrawl it is needed to modify the balance.
+Most of the times we create objects from classes for those to encapsulate some state, if there is no state involvevd, then we most probably will declare functions as static, and the class will just act as a name space.</p>
+<p>At least from my perspective objects are means to encapsulate a state and allow operations on that state. If we can describe state in a function, then we can say that we did describe an object with functions without the need for a class.</p>
+<p>So how can we have state inside a function?
+As we previosuly saw, closures can capture values. Let&rsquo;s complete the info we do have with some more form the Apple docs:</p>
+<blockquote>
+<p>A closure can capture any of its outer function’s arguments, variables, constants.
+The closure can then refer to and modify the values of those constants and variables from within its body, even if the original scope that defined the constants and variables no longer exists.</p>
+</blockquote>
+<p>With banking account, we do have 3 nested functions(which, lets not forget, are closures). And once makeBankAccount returns, those 3 functions will leave the makeBankAccount scope, but the state will be captured.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">makeBankAcount</span>(withInitialBalance balance: Int) -&gt; FBankAccount {
+    <span style="color:#75715e">/// Private state</span>
+    <span style="color:#66d9ef">var</span> currentBalance = balance
+
+    <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">getBalance</span>() -&gt; Int {
+        currentBalance
+    }
+
+    <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">deposit</span>(<span style="color:#66d9ef">_</span> amount: Int) {
+        currentBalance <span style="color:#f92672">+=</span> amount
+    }
+
+    <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">widthdrawl</span>(<span style="color:#66d9ef">_</span> amount: Int) {
+        <span style="color:#66d9ef">guard</span> amount <span style="color:#f92672">&lt;</span> currentBalance <span style="color:#66d9ef">else</span> {
+            <span style="color:#66d9ef">return</span>
+        }
+
+        currentBalance <span style="color:#f92672">-=</span> amount
+    }
+    <span style="color:#66d9ef">return</span> (getBalance, deposit, widthdrawl)
+}
+
+<span style="color:#66d9ef">let</span> fBankAccount = makeBankAcount(withInitialBalance: <span style="color:#ae81ff">10</span>)
+fBankAccount.deposit(<span style="color:#ae81ff">5</span>)
+fBankAccount.widthdrawl(<span style="color:#ae81ff">12</span>)
+<span style="color:#66d9ef">let</span> balance = fBankAccount.getBalance() <span style="color:#75715e">/// outputs 3</span>
+</code></pre></div><p>Note that currentBalance is private implicitly and it is visible only inside the makeBankAcount scope and 3 nested functions.
+And I think now we can safely say that fBankAccount is in the same manner an object as the bank account created with a class.</p>
+<p>But, you my ask, what about subclassing?</p>
+<p>Suppose we do want to have a bank account with interest applied on deposit.
+In OOP we&rsquo;ll do something like this:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SavingsBankAccount</span>: BankAccount {
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">let</span> interestRate: Double
+
+    <span style="color:#66d9ef">init</span>(interestRate: Double, initialBalance: Double) {
+        <span style="color:#66d9ef">self</span>.interestRate = interestRate
+        <span style="color:#66d9ef">super</span>.<span style="color:#66d9ef">init</span>(initialBalance: initialBalance)
+    }
+
+    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">deposit</span>(<span style="color:#66d9ef">_</span> amount: Double) {
+        <span style="color:#66d9ef">super</span>.deposit(amount <span style="color:#f92672">*</span> interestRate <span style="color:#f92672">/</span> <span style="color:#ae81ff">100</span>)
+    }
+}
+</code></pre></div><p>Now with only functions:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">makeSavingsBankAccount</span>(interestRate: Double, initialBalance: Double) -&gt; FSavingsBankAccount {
+    <span style="color:#66d9ef">let</span> bankAccount = makeBankAcount(withInitialBalance: initialBalance)
+    <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">deposit</span>(<span style="color:#66d9ef">_</span> amount: Double) {
+        <span style="color:#66d9ef">let</span> interest = amount <span style="color:#f92672">*</span> interestRate <span style="color:#f92672">/</span> <span style="color:#ae81ff">100</span>
+        bankAccount.deposit(amount <span style="color:#f92672">+</span> interest)
+    }
+    <span style="color:#66d9ef">return</span> (bankAccount.getBalance, deposit, bankAccount.widthdrawl)
+}
+</code></pre></div><p>You may argue that with functions it is not actual inheritance, and you will be right - Functions cannot inherit. But we have achieved the same behaviour as with inheritance through means of composition.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>This post completes the first one and concludes the preparation for diving deeper into the functional proramming through Structure and Interpretation of Computer Programs book. We&rsquo;ve touched some points, but mostly high level, we&rsquo;ll get into more details about the implications, step by step, in future posts.</p>
+<ul>
+<li>We saw that functions are very similar to classes, and that we can represent and object only through functions.</li>
+<li>We saw the power of closure, and how underused it is, but as always with great power comes great responsibility.</li>
+<li>We saw that functions have a lot to give, and since most of programs functionality is embeded in functions, leveraging the functionality of functions can be a great tool in your arsenal.</li>
+</ul>
+<p>Even though I have compared OOP to FP in the last two posts, by no means I do advocate that FP is better than OOP. Both are powerful, and I think we can use the best of two worlds to achieve more. Somehow we are getting a bit scared, confused and other funny stuff, when we do hear about functional programming. I guess it is the same when FP programers hear about OOP and all of its terminology. As we saw in this post the line between functions and objects/classes is very thin, so don&rsquo;t be afraid to use some of the FP principles in your OOP projects, let it be another tool you can use to build great things.</p>
+<p>Till next time!</p>
+
+
+
+                    </div>
+                </div>
+
+                
+                    <div class="col-sm-12 col-md-3">
+                        <nav id="TableOfContents" class="sticky-top">
+  <ul>
+    <li><a href="#function-as-return-type-of-another-function">Function as return type of another function</a></li>
+    <li><a href="#closures">Closures</a></li>
+    <li><a href="#class-vs-function">Class vs function</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+                    </div>
+                
+            </div>
+
+            <div class="row">
+                <div
+                    
+                    class="col-md-9 col-lg-9"
+                    
+                >
+                    
+                        <div class="navigation">
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    
+                                        <div class="mx-0 mx-md-4 mt-4 text-left">
+                                            <a href="/blog/functions_in_swift_p1/">
+                                                <span class="icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 477.175 477.175">
+        <path d="M145.188,238.575l215.5-215.5c5.3-5.3,5.3-13.8,0-19.1s-13.8-5.3-19.1,0l-225.1,225.1c-5.3,5.3-5.3,13.8,0,19.1l225.1,225 c2.6,2.6,6.1,4,9.5,4s6.9-1.3,9.5-4c5.3-5.3,5.3-13.8,0-19.1L145.188,238.575z" />
+    </svg>
+</span>
+
+                                                <span class="text">Functions in Swift Part 1</span>
+                                            </a>
+                                        </div>
+                                    
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    
+                                        <div class="mx-0 mx-md-4 mt-4 text-right">
+                                            <a href="/blog/if_expressions/">
+                                                <span class="text">If expression in Swift [SICP 1]</span>
+                                                <span class="icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 477.175 477.175">
+        <path d="M360.731,229.075l-225.1-225.1c-5.3-5.3-13.8-5.3-19.1,0s-5.3,13.8,0,19.1l215.5,215.5l-215.5,215.5 c-5.3,5.3-5.3,13.8,0,19.1c2.6,2.6,6.1,4,9.5,4c3.4,0,6.9-1.3,9.5-4l225.1-225.1C365.931,242.875,365.931,234.275,360.731,229.075z" />
+    </svg>
+</span>
+
+                                            </a>
+                                        </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    
+
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="my-4 footer">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-sm-12 col-md-6 col-lg-5">
+                <div class="mx-0 mx-md-4 mb-2 text-center text-md-left">
+                    
+
+                    
+                        
+                            <a href="http://creativecommons.org/licenses/by/4.0/">© 2020 by Ghenadie Pusca</a>
+                        
+                    
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-5">
+                <div class="mx-0 mx-md-4 text-center text-md-right">
+                    
+
+                    
+
+                    
+    <a href="https://github.com/GhenadiePusca"
+        target="_blank"
+        class="mx-1 ml-md-2 mr-md-0 icon"
+        aria-label="GitHub">
+
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill-rule="evenodd" clip-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="1.414">
+            <path d="M8 0C3.58 0 0 3.582 0 8c0 3.535 2.292 6.533 5.47 7.59.4.075.547-.172.547-.385 0-.19-.007-.693-.01-1.36-2.226.483-2.695-1.073-2.695-1.073-.364-.924-.89-1.17-.89-1.17-.725-.496.056-.486.056-.486.803.056 1.225.824 1.225.824.714 1.223 1.873.87 2.33.665.072-.517.278-.87.507-1.07-1.777-.2-3.644-.888-3.644-3.953 0-.873.31-1.587.823-2.147-.09-.202-.36-1.015.07-2.117 0 0 .67-.215 2.2.82.64-.178 1.32-.266 2-.27.68.004 1.36.092 2 .27 1.52-1.035 2.19-.82 2.19-.82.43 1.102.16 1.915.08 2.117.51.56.82 1.274.82 2.147 0 3.073-1.87 3.75-3.65 3.947.28.24.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.14.46.55.38C13.71 14.53 16 11.53 16 8c0-4.418-3.582-8-8-8"/>
+        </svg>
+    </a>
+
+
+                    
+
+                    
+    <a href="https://twitter.com/GhenadiePusca"
+        target="_blank"
+        class="mx-1 ml-md-2 mr-md-0 icon"
+        aria-label="Twitter">
+
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill-rule="evenodd" clip-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="1.414">
+            <path d="M16 3.038c-.59.26-1.22.437-1.885.517.677-.407 1.198-1.05 1.443-1.816-.634.37-1.337.64-2.085.79-.598-.64-1.45-1.04-2.396-1.04-1.812 0-3.282 1.47-3.282 3.28 0 .26.03.51.085.75-2.728-.13-5.147-1.44-6.766-3.42C.83 2.58.67 3.14.67 3.75c0 1.14.58 2.143 1.46 2.732-.538-.017-1.045-.165-1.487-.41v.04c0 1.59 1.13 2.918 2.633 3.22-.276.074-.566.114-.865.114-.21 0-.41-.02-.61-.058.42 1.304 1.63 2.253 3.07 2.28-1.12.88-2.54 1.404-4.07 1.404-.26 0-.52-.015-.78-.045 1.46.93 3.18 1.474 5.04 1.474 6.04 0 9.34-5 9.34-9.33 0-.14 0-.28-.01-.42.64-.46 1.2-1.04 1.64-1.7z" fill-rule="nonzero"/>
+        </svg>
+    </a>
+
+
+                    
+
+                    
+
+                    
+    <a href="https://www.linkedin.com/in/ghenadie-pusca-321263162"
+        target="_blank"
+        class="mx-1 ml-md-2 mr-md-0 icon"
+        aria-label="Linkedin">
+
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill-rule="evenodd" clip-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="1.414">
+            <path d="M13.632 13.635h-2.37V9.922c0-.886-.018-2.025-1.234-2.025-1.235 0-1.424.964-1.424 1.96v3.778h-2.37V6H8.51v1.04h.03c.318-.6 1.092-1.233 2.247-1.233 2.4 0 2.845 1.58 2.845 3.637v4.188zM3.558 4.955c-.762 0-1.376-.617-1.376-1.377 0-.758.614-1.375 1.376-1.375.76 0 1.376.617 1.376 1.375 0 .76-.617 1.377-1.376 1.377zm1.188 8.68H2.37V6h2.376v7.635zM14.816 0H1.18C.528 0 0 .516 0 1.153v13.694C0 15.484.528 16 1.18 16h13.635c.652 0 1.185-.516 1.185-1.153V1.153C16 .516 15.467 0 14.815 0z" fill-rule="nonzero"/>
+        </svg>
+    </a>
+
+
+                    
+    <a href="mailto:pusca.ghenadie@gmail.com"
+        class="mx-1 ml-md-2 mr-md-0 icon"
+        aria-label="Email">
+
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 16">
+            <path d="M0 4v8c0 .55.45 1 1 1h12c.55 0 1-.45 1-1V4c0-.55-.45-1-1-1H1c-.55 0-1 .45-1 1zm13 0L7 9 1 4h12zM1 5.5l4 3-4 3v-6zM2 12l3.5-3L7 10.5 8.5 9l3.5 3H2zm11-.5l-4-3 4-3v6z"/>
+        </svg>
+    </a>
+
+
+                    <a href=''
+    class="mx-1 ml-md-2 mr-md-0 icon"
+    aria-label="RSS">
+
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill-rule="evenodd" clip-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="1.414">
+        <path d="M12.8 16C12.8 8.978 7.022 3.2 0 3.2V0c8.777 0 16 7.223 16 16h-3.2zM2.194 11.61c1.21 0 2.195.985 2.195 2.196 0 1.21-.99 2.194-2.2 2.194C.98 16 0 15.017 0 13.806c0-1.21.983-2.195 2.194-2.195zM10.606 16h-3.11c0-4.113-3.383-7.497-7.496-7.497v-3.11c5.818 0 10.606 4.79 10.606 10.607z"/>
+    </svg>
+</a>
+
+
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js" integrity="sha256-1zu+3BnLYV9LdiY85uXMzii3bdrkelyp37e0ZyTAQh0=" crossorigin="anonymous"></script>
+        
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/languages/swift.min.js" defer></script>
+        
+        <script>
+            window.addEventListener('load', function() {
+                hljs.initHighlighting();
+            }, true);
+        </script>
+    
+
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/progressively/1.2.5/progressively.min.js" integrity="sha256-LvFVlLdfGI3WeEH+8Ni4kxLm02g2GlOfeGCGLXfRk/U=" crossorigin="anonymous"></script>
+        <script>
+            window.addEventListener('load', function() {
+                progressively.init({delay: 30, throttle: 50});
+            }, true);
+        </script>
+    
+
+    
+
+    
+    
+</body>
+
+</html>

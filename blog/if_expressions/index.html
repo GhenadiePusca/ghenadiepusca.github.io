@@ -121,22 +121,21 @@
     
     <p>This blogpost is a part of going through the SICP book, you can get a free copy from:</p>
 <p><a href="https://web.mit.edu/alexmv/6.037/sicp.pdf">https://web.mit.edu/alexmv/6.037/sicp.pdf</a></p>
-<p>A while ago, I’ve heard about functional programming.
-Being in the pursuit of improving my skills as a programmer, all of the functional methodologies and rules, seem to be of a great value.
-Thus, I embark in a journey of learning functional programming principles, by trying to implement all of them in Swift programming language.
-Myself, being an iOS developer, I think it will be of a great value to try and implement the FP principles in Swift.
-This will allow to get more knowledge about the language itself, and how suitable it is for applying functional programming.
-Also, I most probably will retain and use most of FP principles, if implemented in Swift rather in Haskell or LISP(I suggest for you to do the same in your favorite/working language). In my experience I found that even though I do learn new things in some other languages, those will be forgotten with time if not exercised in Swift, even though those things do have a great value.</p>
+<p>I&rsquo;ve started to be interested in functional programming principles some time ago. I&rsquo;ve learned from here and there, getting to know more and more, about functional programming. And to be fair, I want to continue getting more advanced with FP.
+As we saw in two previous introductory posts, Swift allows us to also do functional programming, and that it can blend quite well in OOP world. My intention is to learn another great tool, and make use of it along with using OOP.</p>
 <h2 id="the-beginning-of-the-sicp-book">The beginning of the SICP book</h2>
-<p>As you start reading the first pages of the SICP book, you’ll see that the authors takes you through the simplest means of a programming language.
+<p>As we start reading the first pages of the SICP book, we&rsquo;ll see that the authors takes us through the simplest means of a programming language.
 This first part is simple and pretty straightforward, besides having a lot of parentheses(but if you wrote at least some code in Objective C, no big deal :)).
-The interesting part is the mention of expressions, like almost everything is an expression, even Conditional logic, like “if” and “cond”(aka switch).
-Today I want to focus on “if” expression, and through it get a better knowledge of what is an expression.</p>
+The interesting part is the mention of expressions, like almost everything is an expression, even Conditional logic - “if” and “cond”(aka switch).
+Today I want to focus on “if” expression, and through it get a better knowledge of what is an expression. Also to be able to work in a through FP fashion, we&rsquo;ll need to have defined an if expression in swift.</p>
 <h2 id="if-expression">If expression</h2>
 <p>By the book, <code>if</code> expression is defined as:</p>
-<pre><code>(if ⟨predicate⟩ ⟨consequent⟩ ⟨alternative⟩)  
-</code></pre><p>To evaluate an <code>if expression</code>, the interpreter starts by evaluating the <strong>predicate</strong>. If <strong>predicate</strong> evaluates to a true value, interpreter then evaluates the <strong>consequent</strong> and returns its value. Otherwise it evaluates the <strong>alternative</strong> and returns its value.
-And the most important part is that <code>if expression</code> - returns a value. We’ll start exploring what options do we have in Swift language, what is the difference between an <code>if</code> returning a value and the one that does not, and what are the applications.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">(<span style="color:#66d9ef">if</span> <span style="color:#960050;background-color:#1e0010">⟨</span>predicate<span style="color:#960050;background-color:#1e0010">⟩</span> <span style="color:#960050;background-color:#1e0010">⟨</span>consequent<span style="color:#960050;background-color:#1e0010">⟩</span> <span style="color:#960050;background-color:#1e0010">⟨</span>alternative<span style="color:#960050;background-color:#1e0010">⟩</span>)  
+</code></pre></div><blockquote>
+<p>To evaluate an <code>if expression</code>, the interpreter starts by evaluating the &gt; <strong>predicate</strong>. If <strong>predicate</strong> evaluates to a true value, interpreter then evaluates the <strong>consequent</strong> and returns its value. Otherwise it evaluates the <strong>alternative</strong> and returns its value.</p>
+</blockquote>
+<p>Well, swift is not an intepreted language, but if expression works in same way with a comiled language.</p>
+<p>The most important part is that <code>if expression</code> - returns a value. We’ll start exploring what options do we have in Swift language, what is the difference between an <code>if</code> returning a value and the one that does not, and what are the applications.</p>
 <h2 id="if-statement-in-swift">If statement in swift</h2>
 <p>If statement in swift is no different than in other languages, XCode docs says:</p>
 <blockquote>
@@ -153,8 +152,8 @@ And the most important part is that <code>if expression</code> - returns a value
 <p>As in many other languages ternary operator in swift is defined as:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">&lt;predicate&gt; ? &lt;consequent&gt; : &lt;alternative&gt;
 </code></pre></div><p>Note that it is very similar to <code>if</code> expression defined in SICP book:</p>
-<pre><code>(if ⟨predicate⟩ ⟨consequent⟩ ⟨alternative⟩)
-</code></pre><p>Ternary operator has two important properties:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">(<span style="color:#66d9ef">if</span> <span style="color:#960050;background-color:#1e0010">⟨</span>predicate<span style="color:#960050;background-color:#1e0010">⟩</span> <span style="color:#960050;background-color:#1e0010">⟨</span>consequent<span style="color:#960050;background-color:#1e0010">⟩</span> <span style="color:#960050;background-color:#1e0010">⟨</span>alternative<span style="color:#960050;background-color:#1e0010">⟩</span>)
+</code></pre></div><p>Ternary operator has two important properties:</p>
 <ul>
 <li>It always returns a value.</li>
 <li>consequent and alternative should have same type.</li>
@@ -180,24 +179,24 @@ And the most important part is that <code>if expression</code> - returns a value
 </code></pre></div><p>As we see, if statement and ternary operator cannot easily substitute one another,
 as with ternary operator else branch cannot be omitted and nesting is quite clumsy. What if we could have an <code>if</code> which will have the benefits of both?</p>
 <h2 id="expressions-vs-statements">Expressions vs statements</h2>
-<p><code>if</code> defined in swift is a statement, while <code>if</code> defined in the SICP book, and in many other functional programming, is an expression. Almost all of the Functional Languages have <code>if</code> as an expression, thus there is no need for a ternary operator to be defined.</p>
-<p>It appears that most of the functional languages are expression-oriented, and it is somewhat correct to say that most of the imperative languages are statement-oriented. Everything has to do with side effects, almost in any definition of FP you will find that functional programming avoids as hell side effects, while in imperative programming side effects are everywhere(sure you can avoid this, but the language itself does not constrain you).</p>
+<p><code>if</code> defined in swift is a statement, while <code>if</code> defined in the SICP book, and in many other functional programming, is an expression. All of the language that do have <code>if</code> as an expression, do not have the ternary operator defined.</p>
+<p>It appears that most of the functional languages are expression-oriented. Everything has to do with side effects, almost in any definition of FP you will find that functional programming constrains the ability to easylly perform side effects</p>
 <blockquote>
 <p>Expressions always return a value, statements don&rsquo;t and are used to perform side effects.</p>
 </blockquote>
 <h2 id="creating-a-swift-if-expression">Creating a swift if expression</h2>
 <p>Let’s take a simple example, and start creating our own if expression.</p>
-<pre><code>func example(a: Int, b: Int) -&gt; Int {
- let multiplier: Int
- if a &gt; b {
-  multiplier = a - b
- } else {
-  multiplier = b - a
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">example</span>(a: Int, b: Int) -&gt; Int {
+ <span style="color:#66d9ef">let</span> multiplier: Int
+ <span style="color:#66d9ef">if</span> a <span style="color:#f92672">&gt;</span> b {
+  multiplier = a <span style="color:#f92672">-</span> b
+ } <span style="color:#66d9ef">else</span> {
+  multiplier = b <span style="color:#f92672">-</span> a
  }
- 
- return a * multiplier
+
+ <span style="color:#66d9ef">return</span> a <span style="color:#f92672">*</span> multiplier
 }
-</code></pre><p>This is a pretty standard example of using an if statement - when in function body we need to perform some additional calculations. As you can see if statement is having side effects on multiplier. We can refactor this to use ternary operator as such:</p>
+</code></pre></div><p>This is a pretty standard example of using an if statement - when in function body we need to perform some additional calculations. As you can see if statement is having side effects on multiplier. We can refactor this to use ternary operator as such:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">example</span>(a: Int, b: Int) -&gt; Int {
  <span style="color:#66d9ef">let</span> multiplier = a <span style="color:#f92672">&gt;</span> b ? a <span style="color:#f92672">-</span> b : b <span style="color:#f92672">-</span> a
  <span style="color:#66d9ef">return</span> a <span style="color:#f92672">*</span> multiplier
@@ -219,7 +218,7 @@ Now from here on, we do want to create our own if expression to be used:</p>
 }
 </code></pre></div><p>I’d say it looks better than ternary operator. But this implementation does not mirror completely the functionality of the ternary operator, ternary operator has short circuit evaluation - false branch will not be evaluated if the condition is true and vice versa. Our If expression currently does not have this behaviour.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">If</span>(<span style="color:#66d9ef">_</span> predicate: Bool,
-        <span style="color:#66d9ef">_</span> consequent: () -&gt; Int, 
+        <span style="color:#66d9ef">_</span> consequent: () -&gt; Int,
         <span style="color:#66d9ef">_</span> alternative: () -&gt; Int) -&gt; Int {
  predicate ? consequent() : alternative()
 }
@@ -233,6 +232,7 @@ Now from here on, we do want to create our own if expression to be used:</p>
         <span style="color:#66d9ef">_</span> alternative: <span style="color:#66d9ef">@autoclosure</span> () -&gt; Int) -&gt; Int {
  predicate ? consequent() : alternative()
 }
+
 <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">example</span>(a: Int, b: Int) -&gt; Int {
  <span style="color:#66d9ef">return</span> a <span style="color:#f92672">*</span> If(a <span style="color:#f92672">&gt;</span> b, a <span style="color:#f92672">-</span> b, b <span style="color:#f92672">-</span> a)
 }
@@ -262,7 +262,8 @@ Now from here on, we do want to create our own if expression to be used:</p>
 }
 </code></pre></div><p>That is, we have defined an if expression that has the best from the if statement and ternary operator.</p>
 <h2 id="conclusion">Conclusion</h2>
-<p>This was the start of exploring functional programming through SICP book. The main idea was to play and explore how well functional principles do apply in Swift. The first &lsquo;alien&rsquo; encounter is that much of everything in FP(at least for the language in SICP) is an expression. We saw that Swift provides an expression like <code>if</code> under the ternary operator, however it has its shortcomings - chaining multiple ternary operators look ugly and inability to have only the true branch executed. By comparing if statement to the ternary operator we have concluded what are the main differences between an expression and a statement. In the last part a straightforward functional implementation for the if expression was done. The new if expression could have been implemented by extending swift standard library and implemente a custom feature, however the main idea was to see how easily we can create a custom, general purpose functional component in swift.
+<p>This was the start of exploring functional programming through SICP book.
+We saw that Swift provides an expression like <code>if</code> under the ternary operator, however it has its shortcomings - chaining multiple ternary operators look ugly and inability to have only the true branch executed. By comparing if statement to the ternary operator we have concluded what are the main differences between an expression and a statement. In the last part a straightforward functional implementation for the if expression was done. The new if expression could have been implemented by extending swift standard library and implemented a custom language feature, however the main idea was to see how easily we can create a custom, general purpose functional component in swift.
 Moving forward with the knowledge acquired, we will have to build other general purpose functional component such as cond(aka switch), this will be explored in the next post.
 Having those components in place, we will be able to conquer the examples and exercises from the book in a functional manner.</p>
 <p>Till next time!</p>
@@ -307,14 +308,14 @@ Having those components in place, we will be able to conquer the examples and ex
                                 <div class="col-12 col-md-6">
                                     
                                         <div class="mx-0 mx-md-4 mt-4 text-left">
-                                            <a href="/blog/functions_in_swift/">
+                                            <a href="/blog/functions_in_swift_p2/">
                                                 <span class="icon">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 477.175 477.175">
         <path d="M145.188,238.575l215.5-215.5c5.3-5.3,5.3-13.8,0-19.1s-13.8-5.3-19.1,0l-225.1,225.1c-5.3,5.3-5.3,13.8,0,19.1l225.1,225 c2.6,2.6,6.1,4,9.5,4s6.9-1.3,9.5-4c5.3-5.3,5.3-13.8,0-19.1L145.188,238.575z" />
     </svg>
 </span>
 
-                                                <span class="text">Functions in Swift</span>
+                                                <span class="text">Functions in Swift Part 2</span>
                                             </a>
                                         </div>
                                     
