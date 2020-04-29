@@ -130,11 +130,11 @@ The interesting part is the mention of expressions, like almost everything is an
 Today I want to focus on “if” expression, and through it get a better knowledge of what is an expression. Also to be able to work in a through FP fashion, we&rsquo;ll need to have defined an if expression in swift.</p>
 <h2 id="if-expression">If expression</h2>
 <p>By the book, <code>if</code> expression is defined as:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">(<span style="color:#66d9ef">if</span> <span style="color:#960050;background-color:#1e0010">⟨</span>predicate<span style="color:#960050;background-color:#1e0010">⟩</span> <span style="color:#960050;background-color:#1e0010">⟨</span>consequent<span style="color:#960050;background-color:#1e0010">⟩</span> <span style="color:#960050;background-color:#1e0010">⟨</span>alternative<span style="color:#960050;background-color:#1e0010">⟩</span>)  
-</code></pre></div><blockquote>
-<p>To evaluate an <code>if expression</code>, the interpreter starts by evaluating the &gt; <strong>predicate</strong>. If <strong>predicate</strong> evaluates to a true value, interpreter then evaluates the <strong>consequent</strong> and returns its value. Otherwise it evaluates the <strong>alternative</strong> and returns its value.</p>
+<pre><code>(if ⟨predicate⟩ ⟨consequent⟩ ⟨alternative⟩)  
+</code></pre><blockquote>
+<p>To evaluate an <code>if expression</code>, the interpreter starts by evaluating the <strong>predicate</strong>. If <strong>predicate</strong> evaluates to a true value, interpreter then evaluates the <strong>consequent</strong> and returns its value. Otherwise it evaluates the <strong>alternative</strong> and returns its value.</p>
 </blockquote>
-<p>Well, swift is not an intepreted language, but if expression works in same way with a comiled language.</p>
+<p>Well, swift is not an intepreted language, but if expression works in same way with a compiled language.</p>
 <p>The most important part is that <code>if expression</code> - returns a value. We’ll start exploring what options do we have in Swift language, what is the difference between an <code>if</code> returning a value and the one that does not, and what are the applications.</p>
 <h2 id="if-statement-in-swift">If statement in swift</h2>
 <p>If statement in swift is no different than in other languages, XCode docs says:</p>
@@ -152,8 +152,8 @@ Today I want to focus on “if” expression, and through it get a better knowle
 <p>As in many other languages ternary operator in swift is defined as:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">&lt;predicate&gt; ? &lt;consequent&gt; : &lt;alternative&gt;
 </code></pre></div><p>Note that it is very similar to <code>if</code> expression defined in SICP book:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">(<span style="color:#66d9ef">if</span> <span style="color:#960050;background-color:#1e0010">⟨</span>predicate<span style="color:#960050;background-color:#1e0010">⟩</span> <span style="color:#960050;background-color:#1e0010">⟨</span>consequent<span style="color:#960050;background-color:#1e0010">⟩</span> <span style="color:#960050;background-color:#1e0010">⟨</span>alternative<span style="color:#960050;background-color:#1e0010">⟩</span>)
-</code></pre></div><p>Ternary operator has two important properties:</p>
+<pre><code>(if ⟨predicate⟩ ⟨consequent⟩ ⟨alternative⟩)
+</code></pre><p>Ternary operator has two important properties:</p>
 <ul>
 <li>It always returns a value.</li>
 <li>consequent and alternative should have same type.</li>
@@ -179,7 +179,7 @@ Today I want to focus on “if” expression, and through it get a better knowle
 </code></pre></div><p>As we see, if statement and ternary operator cannot easily substitute one another,
 as with ternary operator else branch cannot be omitted and nesting is quite clumsy. What if we could have an <code>if</code> which will have the benefits of both?</p>
 <h2 id="expressions-vs-statements">Expressions vs statements</h2>
-<p><code>if</code> defined in swift is a statement, while <code>if</code> defined in the SICP book, and in many other functional programming, is an expression. All of the language that do have <code>if</code> as an expression, do not have the ternary operator defined.</p>
+<p><code>if</code> defined in swift is a statement, while <code>if</code> defined in the SICP book, and in many other FP languages, is an expression. All of the language that have <code>if</code> as an expression, do not have the ternary operator defined.</p>
 <p>It appears that most of the functional languages are expression-oriented. Everything has to do with side effects, almost in any definition of FP you will find that functional programming constrains the ability to easylly perform side effects</p>
 <blockquote>
 <p>Expressions always return a value, statements don&rsquo;t and are used to perform side effects.</p>
@@ -216,7 +216,7 @@ Now from here on, we do want to create our own if expression to be used:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">example</span>(a: Int, b: Int) -&gt; Int {
  <span style="color:#66d9ef">return</span> a <span style="color:#f92672">*</span> If(a <span style="color:#f92672">&gt;</span> b, a <span style="color:#f92672">-</span> b, b <span style="color:#f92672">-</span> a)
 }
-</code></pre></div><p>I’d say it looks better than ternary operator. But this implementation does not mirror completely the functionality of the ternary operator, ternary operator has short circuit evaluation - false branch will not be evaluated if the condition is true and vice versa. Our If expression currently does not have this behaviour.</p>
+</code></pre></div><p>I’d say it looks better than ternary operator. But this implementation does not mirror completely the functionality of the ternary operator, ternary operator has short circuit evaluation - false branch will not be evaluated if the condition is true and vice versa. Recalling how function arguments can be evaluated(normal order vs applicative order), it&rsquo;s clear that our current implementation evaluates the arguments before the function is applied, we want to switch to normal order - evaluate arguments when it is needed.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">If</span>(<span style="color:#66d9ef">_</span> predicate: Bool,
         <span style="color:#66d9ef">_</span> consequent: () -&gt; Int,
         <span style="color:#66d9ef">_</span> alternative: () -&gt; Int) -&gt; Int {
@@ -346,6 +346,13 @@ Having those components in place, we will be able to conquer the examples and ex
                         
                     
                 </div>
+                <div class="mx-0 mx-md-4 mb-2 text-center text-md-left">
+                    <a href="https://gohugo.io">Published using: HUGO</a>
+                </div>
+
+                <div class="mx-0 mx-md-4 mb-2 text-center text-md-left">
+                    <a href="https://github.com/gkmngrgn/hugo-alageek-theme/blob/master/LICENSE.md">Theme: Alageek</a>
+                </div>
             </div>
             <div class="col-sm-12 col-md-6 col-lg-5">
                 <div class="mx-0 mx-md-4 text-center text-md-right">
@@ -384,7 +391,7 @@ Having those components in place, we will be able to conquer the examples and ex
                     
 
                     
-    <a href="https://www.linkedin.com/in/ghenadie-pusca-321263162"
+    <a href="https://www.linkedin.com/in/ghenadie-pusca"
         target="_blank"
         class="mx-1 ml-md-2 mr-md-0 icon"
         aria-label="Linkedin">
