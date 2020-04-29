@@ -135,6 +135,90 @@ Aaand, thats it, we&rsquo;ve stoped at those functions used to process arrays. L
 <li>args are the inputs of the function, in same way class has inputs through the initialiser. However class can define inputs also through its public properties and/or functions.</li>
 <li>return type is the output of a function, in the same way a class defines public properties and/or method to expose its outputs.</li>
 </ul>
+<h2 id="function-arguments-and-their-evaluation">Function arguments and their evaluation</h2>
+<p>There are different terms in FP to describe how function arguments are evaluated. Two of which I am aware of are:</p>
+<ul>
+<li>Call by name vs call by value - as per Martin Odersky in Scala</li>
+<li>Normal order vs applicative order - as per Structure and Interpretation of Compute Programms book</li>
+</ul>
+<p>Both are different name for the same things.</p>
+<h3 id="call-by-value--applicative-order">Call by value / applicative order</h3>
+<p>In this case, argumets of a function are first evaluated and then function is applied.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">f</span>(a: Int) -&gt; Int {
+    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">5</span> <span style="color:#f92672">+</span> a
+}
+
+f(a: <span style="color:#ae81ff">9</span><span style="color:#f92672">-</span><span style="color:#ae81ff">5</span>)
+<span style="color:#75715e">/// this becomes</span>
+f(a: <span style="color:#ae81ff">4</span>)
+<span style="color:#75715e">/// and then</span>
+<span style="color:#ae81ff">5</span><span style="color:#f92672">+</span><span style="color:#ae81ff">4</span>
+</code></pre></div><p>In example above, first the value of 9-5 will be computed, and then function <code>f</code> will be actually applied with the value of 4. Thus we can also say that:</p>
+<blockquote>
+<p>With call by value / applicative order, arguments of a function are evaluated before those are used.</p>
+</blockquote>
+<h3 id="call-by-name---normal-order">Call by name /  normal order</h3>
+<p>In this case, function is first applied/expanded and then the value of the arguments are evaluated. As in Scala, in Swift we can achieve this by having as an input a function:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">f</span>(f: () -&gt; Int) -&gt; Int {
+    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">5</span> <span style="color:#f92672">+</span> f()
+}
+
+f(f: { <span style="color:#ae81ff">9</span><span style="color:#f92672">-</span><span style="color:#ae81ff">5</span> })
+<span style="color:#75715e">/// this becomes</span>
+<span style="color:#ae81ff">5</span><span style="color:#f92672">+</span>f()
+<span style="color:#75715e">/// and then</span>
+<span style="color:#ae81ff">5</span><span style="color:#f92672">+</span><span style="color:#ae81ff">4</span>
+</code></pre></div><blockquote>
+<p>With call by name / normal order, arguments of a function are not evaluated until those are needed. We can say that it is lazy evaluation.</p>
+</blockquote>
+<p>So what are the benefits of one over another?</p>
+<p>With call by value / applicative order we can make the result of the argument reusable, thus improving the program performance:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">f</span>(a: Int) -&gt; Int {
+    <span style="color:#66d9ef">let</span> x = <span style="color:#ae81ff">10</span> <span style="color:#f92672">+</span> a
+    <span style="color:#66d9ef">let</span> y = <span style="color:#ae81ff">10</span> <span style="color:#f92672">-</span> a
+    <span style="color:#66d9ef">return</span> (x <span style="color:#f92672">+</span> y)<span style="color:#f92672">*</span>a
+}
+f(a: <span style="color:#ae81ff">9</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">5</span>)
+<span style="color:#75715e">/// becomes</span>
+<span style="color:#66d9ef">let</span> x = <span style="color:#ae81ff">10</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">4</span>
+<span style="color:#66d9ef">let</span> y = <span style="color:#ae81ff">10</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">4</span>
+(x <span style="color:#f92672">+</span> y)<span style="color:#f92672">*</span><span style="color:#ae81ff">4</span>
+
+<span style="color:#75715e">// vs</span>
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">fN</span>(f: () -&gt; Int) -&gt; Int {
+    <span style="color:#66d9ef">let</span> x = <span style="color:#ae81ff">10</span> <span style="color:#f92672">+</span> f()
+    <span style="color:#66d9ef">let</span> y = <span style="color:#ae81ff">10</span> <span style="color:#f92672">-</span> f()
+    <span style="color:#66d9ef">return</span> (x <span style="color:#f92672">+</span> y)<span style="color:#f92672">*</span>f()
+}
+
+fN(f: { <span style="color:#ae81ff">9</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">5</span> })
+<span style="color:#75715e">// becomes</span>
+<span style="color:#66d9ef">let</span> x = <span style="color:#ae81ff">10</span> <span style="color:#f92672">+</span> f()
+<span style="color:#66d9ef">let</span> y = <span style="color:#ae81ff">10</span> <span style="color:#f92672">-</span> f()
+(x <span style="color:#f92672">+</span> y)<span style="color:#f92672">*</span>f()
+</code></pre></div><p>Note that in the case of call by name / applicative order the function f() will called three times, thus the value 9-5 will be computed 3 times. Sure you can say that we can store the value of f() in variable, but then why not having the function result passed as an argument.</p>
+<p>With call by name / normal order we can avoid doing some calculations if not needed:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">f</span>(x: Int, a: Int) -&gt; Int {
+    <span style="color:#66d9ef">if</span> x <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span> {
+        <span style="color:#66d9ef">return</span> x
+    }
+    <span style="color:#66d9ef">return</span> x <span style="color:#f92672">+</span> a
+}
+
+f(x: <span style="color:#f92672">-</span><span style="color:#ae81ff">4</span>, a: <span style="color:#ae81ff">9</span><span style="color:#f92672">-</span><span style="color:#ae81ff">5</span>)
+
+<span style="color:#75715e">/// vs</span>
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">fN</span>(x: Int, f: () -&gt; Int) -&gt; Int {
+    <span style="color:#66d9ef">if</span> x <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span> {
+        <span style="color:#66d9ef">return</span> x
+    }
+    <span style="color:#66d9ef">return</span> x <span style="color:#f92672">+</span> f()
+}
+
+f(x: <span style="color:#f92672">-</span><span style="color:#ae81ff">4</span>, a: { <span style="color:#ae81ff">9</span><span style="color:#f92672">-</span><span style="color:#ae81ff">5</span> })
+</code></pre></div><p>We can see that with call by name / normal order we will calculate the value only when it is needed, while with call by value / applicative order we will calculate the value of the argument a even if it will not be needed.
+Ofcourse the example above is oversimplified, and most of the times we would use call by value / applicative order. But it also can be a greate improvement for your program to identify the cases when an call by name / normal order would be better. Usually you would do this to avoid allocation of some resources until those are needed. An example would be when you do some request and on error to show an error banner, you will instantiate the error banner on errorCompletion(or something like this) instead of passing an instance directly to the calling function.</p>
 <h2 id="function-depedencies">Function depedencies</h2>
 <p>There is often a need to use the functionality of another function in the current function. As with classes there are two ways of doing so:</p>
 <ul>
@@ -282,90 +366,6 @@ loginUser(mail: <span style="color:#e6db74">&#34;@&#34;</span>, password: <span 
     <span style="color:#66d9ef">init</span>(p: P)
 }
 </code></pre></div><p>We will keep adding functions to protocol P, thus violating Interface Segregation principle. For sure there are cases when two functions make sense to be in the same protocol, but usually we do add more functions to protocol just for convenience.</p>
-<h2 id="function-arguments-and-their-evaluation">Function arguments and their evaluation</h2>
-<p>There are different terms in FP to describe how function arguments are evaluated. Two of which I am aware of are:</p>
-<ul>
-<li>Call by name vs call by value - as per Martin Odersky in Scala</li>
-<li>Normal order vs applicative order - as per Structure and Interpretation of Compute Programms book</li>
-</ul>
-<p>Both are different name for the same things.</p>
-<h3 id="call-by-value--applicative-order">Call by value / applicative order</h3>
-<p>In this case, argumets of a function are first evaluated and then function is applied.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">f</span>(a: Int) -&gt; Int {
-    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">5</span> <span style="color:#f92672">+</span> a
-}
-
-f(a: <span style="color:#ae81ff">9</span><span style="color:#f92672">-</span><span style="color:#ae81ff">5</span>)
-<span style="color:#75715e">/// this becomes</span>
-f(a: <span style="color:#ae81ff">4</span>)
-<span style="color:#75715e">/// and then</span>
-<span style="color:#ae81ff">5</span><span style="color:#f92672">+</span><span style="color:#ae81ff">4</span>
-</code></pre></div><p>In example above, first the value of 9-5 will be computed, and then function <code>f</code> will be actually applied with the value of 4. Thus we can also say that:</p>
-<blockquote>
-<p>With call by value / applicative order, arguments of a function are evaluated before those are used.</p>
-</blockquote>
-<h3 id="call-by-name---normal-order">Call by name /  normal order</h3>
-<p>In this case, function is first applied/expanded and then the value of the arguments are evaluated. As in Scala, in Swift we can achieve this by having as an input a function:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">f</span>(f: () -&gt; Int) -&gt; Int {
-    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">5</span> <span style="color:#f92672">+</span> f()
-}
-
-f(f: { <span style="color:#ae81ff">9</span><span style="color:#f92672">-</span><span style="color:#ae81ff">5</span> })
-<span style="color:#75715e">/// this becomes</span>
-<span style="color:#ae81ff">5</span><span style="color:#f92672">+</span>f()
-<span style="color:#75715e">/// and then</span>
-<span style="color:#ae81ff">5</span><span style="color:#f92672">+</span><span style="color:#ae81ff">4</span>
-</code></pre></div><blockquote>
-<p>With call by name / normal order, arguments of a function are not evaluated until those are needed. We can say that it is lazy evaluation.</p>
-</blockquote>
-<p>So what are the benefits of one over another?</p>
-<p>With call by value / applicative order we can make the result of the argument reusable, thus improving the program performance:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">f</span>(a: Int) -&gt; Int {
-    <span style="color:#66d9ef">let</span> x = <span style="color:#ae81ff">10</span> <span style="color:#f92672">+</span> a
-    <span style="color:#66d9ef">let</span> y = <span style="color:#ae81ff">10</span> <span style="color:#f92672">-</span> a
-    <span style="color:#66d9ef">return</span> (x <span style="color:#f92672">+</span> y)<span style="color:#f92672">*</span>a
-}
-f(a: <span style="color:#ae81ff">9</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">5</span>)
-<span style="color:#75715e">/// becomes</span>
-<span style="color:#66d9ef">let</span> x = <span style="color:#ae81ff">10</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">4</span>
-<span style="color:#66d9ef">let</span> y = <span style="color:#ae81ff">10</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">4</span>
-(x <span style="color:#f92672">+</span> y)<span style="color:#f92672">*</span><span style="color:#ae81ff">4</span>
-
-<span style="color:#75715e">// vs</span>
-
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">fN</span>(f: () -&gt; Int) -&gt; Int {
-    <span style="color:#66d9ef">let</span> x = <span style="color:#ae81ff">10</span> <span style="color:#f92672">+</span> f()
-    <span style="color:#66d9ef">let</span> y = <span style="color:#ae81ff">10</span> <span style="color:#f92672">-</span> f()
-    <span style="color:#66d9ef">return</span> (x <span style="color:#f92672">+</span> y)<span style="color:#f92672">*</span>f()
-}
-
-fN(f: { <span style="color:#ae81ff">9</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">5</span> })
-<span style="color:#75715e">// becomes</span>
-<span style="color:#66d9ef">let</span> x = <span style="color:#ae81ff">10</span> <span style="color:#f92672">+</span> f()
-<span style="color:#66d9ef">let</span> y = <span style="color:#ae81ff">10</span> <span style="color:#f92672">-</span> f()
-(x <span style="color:#f92672">+</span> y)<span style="color:#f92672">*</span>f()
-</code></pre></div><p>Note that in the case of call by name / applicative order the function f() will called three times, thus the value 9-5 will be computed 3 times. Sure you can say that we can store the value of f() in variable, but then why not having the function result passed as an argument.</p>
-<p>With call by name / normal order we can avoid doing some calculations if not needed:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">f</span>(x: Int, a: Int) -&gt; Int {
-    <span style="color:#66d9ef">if</span> x <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span> {
-        <span style="color:#66d9ef">return</span> x
-    }
-    <span style="color:#66d9ef">return</span> x <span style="color:#f92672">+</span> a
-}
-
-f(x: <span style="color:#f92672">-</span><span style="color:#ae81ff">4</span>, a: <span style="color:#ae81ff">9</span><span style="color:#f92672">-</span><span style="color:#ae81ff">5</span>)
-
-<span style="color:#75715e">/// vs</span>
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">fN</span>(x: Int, f: () -&gt; Int) -&gt; Int {
-    <span style="color:#66d9ef">if</span> x <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span> {
-        <span style="color:#66d9ef">return</span> x
-    }
-    <span style="color:#66d9ef">return</span> x <span style="color:#f92672">+</span> f()
-}
-
-f(x: <span style="color:#f92672">-</span><span style="color:#ae81ff">4</span>, a: { <span style="color:#ae81ff">9</span><span style="color:#f92672">-</span><span style="color:#ae81ff">5</span> })
-</code></pre></div><p>We can see that with call by name / normal order we will calculate the value only when it is needed, while with call by value / applicative order we will calculate the value of the argument a even if it will not be needed.
-Ofcourse the example above is oversimplified, and most of the times we would use call by value / applicative order. But it also can be a greate improvement for your program to identify the cases when an call by name / normal order would be better. Usually you would do this to avoid allocation of some resources until those are needed. An example would be when you do some request and on error to show an error banner, you will instantiate the error banner on errorCompletion(or something like this) instead of passing an instance directly to the calling function.</p>
 <h2 id="part-1-conclusion">Part 1 conclusion</h2>
 <p>We&rsquo;ve covered the basic part of functions in swift and started slowly moving towards the goal to show that functions are not that different from classes/objects. We&rsquo;ll be doing things a little more advanced in next post, be sure to check it out to form the complete image.</p>
 <p>Till next time!</p>
@@ -381,13 +381,13 @@ Ofcourse the example above is oversimplified, and most of the times we would use
   <ul>
     <li><a href="#what-do-we-know">What do we know</a></li>
     <li><a href="#what-is-actually-a-function">What is actually a function</a></li>
-    <li><a href="#function-depedencies">Function depedencies</a></li>
     <li><a href="#function-arguments-and-their-evaluation">Function arguments and their evaluation</a>
       <ul>
         <li><a href="#call-by-value--applicative-order">Call by value / applicative order</a></li>
         <li><a href="#call-by-name---normal-order">Call by name /  normal order</a></li>
       </ul>
     </li>
+    <li><a href="#function-depedencies">Function depedencies</a></li>
     <li><a href="#part-1-conclusion">Part 1 conclusion</a></li>
   </ul>
 </nav>
