@@ -44,11 +44,11 @@
                 // Placeholder for actual transaction logic
                 console.log("Sending transaction...");
 
-                // Simulate an asynchronous operation
-                await new Promise(resolve => setTimeout(resolve, 1000));
+                const deepLinkUrl = "radixwallet://connect";
 
-                console.log("Transaction sent!");
-                alert("Transaction successfully sent!");
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            // Attempt to open the deep link directly
+            window.location.href = deepLinkUrl;
             } catch (error) {
                 console.error("Error sending transaction:", error);
                 alert("Failed to send transaction.");
