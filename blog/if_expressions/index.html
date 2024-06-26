@@ -15,7 +15,12 @@
         }
 
         document.addEventListener("DOMContentLoaded", function() {
-            document.getElementById("sendTx").addEventListener("click", sendTransaction);
+            const sendTxButton = document.getElementById("sendTx");
+            if (sendTxButton) {
+                sendTxButton.addEventListener("click", sendTransaction);
+            } else {
+                console.error("Button with id 'sendTx' not found.");
+            }
         });
     </script>
     <meta name="HandheldFriendly" content="True">
