@@ -13,6 +13,10 @@
             // Attempt to open the deep link directly
             window.location.href = deepLinkUrl;
         }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById("sendTx").addEventListener("click", sendTransaction);
+        });
     </script>
     <meta name="HandheldFriendly" content="True">
     <meta name="MobileOptimized" content="320">
@@ -48,7 +52,7 @@
 
 <body>
     
-    <button onclick="openDeepLink()">Open App</button>
+    <button id="sendTx">Send Tx</button>
 
     
 
